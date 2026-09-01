@@ -1,0 +1,22 @@
+DIRETRIZ DE CONDUTA: FIBRILAÇÃO ATRIAL E RISCO TROMBOEMBÓLICO
+Fonte: Biblioteca Virtual em Saúde (BVS / OPAS / Sociedade Brasileira de Arritmias Cardíacas)
+Área Temática: Eletrofisiologia Clínica, Arritmias Cardíacas e Prevenção de AVC
+
+1. EPIDEMIOLOGIA E IMPACTO CLÍNICO
+A Fibrilação Atrial (FA) é a taquiarritmia sustentada mais frequente na prática clínica global, caracterizada por despolarização atrial caótica, perda da contração atrial mecânica eficaz e resposta ventricular irregular. Sua ocorrência eleva em até cinco vezes o risco de Acidente Vascular Cerebral (AVC) isquêmico e duplica a mortalidade por insuficiência cardíaca congestiva.
+
+2. MANIFESTAÇÕES CLÍNICAS E RECONHECIMENTO ELETROCARDIOGRÁFICO
+- Sintomas Clínicos: Palpitações irregulares taquicárdicas, tontura, pré-síncope, astenia, fadiga aos pequenos esforços e dispneia desproporcional. Um percentual significativo de pacientes permanece assintomático, sendo o diagnóstico incidental.
+- Achados no ECG: Ausência completa de ondas P organizadas, substituídas por ondulações basais irregulares em frequência de 300 a 600 ciclos por minuto (ondas f), acompanhadas de intervalos R-R absolutamente irregulares.
+
+3. ESTRATIFICAÇÃO DE RISCO TROMBOEMBÓLICO (ESCORE CHA2DS2-VASc)
+A indicação de anticoagulação sistêmica crônica depende do cômputo estruturado do escore CHA2DS2-VASc:
+- C: Insuficiência Cardíaca Congestiva (1 ponto)
+- H: Hipertensão Arterial Sistêmica (1 ponto)
+- A2: Idade >= 75 anos (2 pontos)
+- D: Diabetes Mellitus (1 ponto)
+- S2: AVC / AIT prévio ou tromboembolismo prévio (2 pontos)
+- V: Doença Vascular periférica, infarto prévio ou placa aórtica (1 ponto)
+- A: Idade entre 65 e 74 anos (1 ponto)
+- Sc: Categoria de sexo feminino (1 ponto)
+Pontuações >= 2 em homens ou >= 3 em mulheres impõem anticoagulação preferencial com Anticoagulantes Orais Diretos (DOACs - Apixabana, Rivaroxabana, Dabigatrana) ou Antagonistas da Vitamina K (Varfarina, controlando INR entre 2,0 e 3,0).

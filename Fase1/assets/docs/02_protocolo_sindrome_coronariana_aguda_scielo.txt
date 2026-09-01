@@ -1,0 +1,18 @@
+PROTOCOLO CLÍNICO: SÍNDROME CORONARIANA AGUDA E INFARTO AGUDO DO MIOCÁRDIO
+Fonte: Arquivos Brasileiros de Cardiologia (SciELO / Sociedade Brasileira de Cardiologia)
+Área Temática: Emergência Cardiológica, Isquemia Miocárdica e Terapia Intensiva
+
+1. CONTEXTUALIZAÇÃO E FISIOPATOLOGIA
+A Síndrome Coronariana Aguda (SCA) compreende um espectro de manifestações isquêmicas agudas decorrentes da ruptura ou erosão de placa aterosclerótica rica em lipídios, acompanhada por trombose intraluminal obstrutiva e embolização distal. O quadro divide-se clinicamente em: Infarto Agudo do Miocárdio com Supradesnível do Segmento ST (IAMCSST) e Infarto Sem Supradesnível do Segmento ST (IAMSSST) / Angina Instável.
+
+2. MANIFESTAÇÕES CLÍNICAS E TRIAGEM EMERGENCIAL
+O sintoma cardinal é a dor precordial ou retroesternal em aperto, peso ou queimação, de início súbito ou progressivo, com duração superior a 20 minutos, sem alívio pelo repouso ou uso de nitratos sublinguais.
+- Irradiações Típicas: Membro superior esquerdo (face medial do braço), mandíbula, dorso e região epigástrica.
+- Sintomas Equivalentes e Autonômicos: Diaforese profusa, náuseas, vômitos, dispneia súbita, síncope e sensação iminente de morte. Apresentações atípicas são altamente prevalentes em mulheres, idosos e indivíduos diabéticos.
+
+3. EXAMES DIAGNÓSTICOS COMPLEMENTARES E BIOMARCADORES
+- Eletrocardiograma de 12 Derivações (ECG): Deve ser realizado e interpretado obrigatoriamente em menos de 10 minutos da admissão hospitalar (tempo porta-ECG). Busca-se supradesnivelamento do segmento ST em pelo menos duas derivações contíguas, inversão simétrica de onda T ou novo bloqueio de ramo esquerdo.
+- Biomarcadores de Necrose Miocárdica: Dosagem seriada de Troponina cardíaca ultrassensível (I ou T). Elevações dinâmicas acima do percentil 99 do limite de referência confirmam injúria tecidual miocárdica aguda.
+
+4. CONDUTA IMEDIATA E REPERFUSÃO
+Administração de dupla antiagregação plaquetária (Ácido Acetilsalicílico associado a Clopidogrel ou Ticagrelor), anticoagulação com Enoxaparina ou Heparina Não Fracionada, e terapia de reperfusão miocárdica: Intervenção Coronária Percutânea (ICP primária) preferencial com tempo porta-balão inferior a 90 minutos, ou fibrinólise (Trombolítico) em até 30 minutos na indisponibilidade de hemodinâmica precoce.

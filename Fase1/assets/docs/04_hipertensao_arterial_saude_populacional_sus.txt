@@ -1,0 +1,19 @@
+DIRETRIZ POPULACIONAL: HIPERTENSÃO ARTERIAL SISTÊMICA E ADESÃO TERAPÊUTICA
+Fonte: Cadernos de Saúde Pública / Ministério da Saúde / Fiocruz
+Área Temática: Saúde Coletiva, Doenças Crônicas Não Transmissíveis e Atenção Primária
+
+1. PANORAMA EPIDEMIOLÓGICO E DETERMINANTES DE SAÚDE
+A Hipertensão Arterial Sistêmica (HAS) constitui o principal fator de risco modificável associado ao infarto agudo do miocárdio, insuficiência cardíaca, doença renal crônica e declínio cognitivo vascular. No Brasil, atinge mais de 30% da população adulta, alcançando patamares superiores a 60% na população idosa. Caracteriza-se por elevação sustentada dos níveis pressóricos (Pressão Arterial Sistólica >= 140 mmHg e/ou Pressão Arterial Diastólica >= 90 mmHg).
+
+2. DANOS EM ÓRGÃOS-ALVO E AVALIAÇÃO CLÍNICA
+A cronicidade da hipertensão não controlada desencadeia disfunção endotelial progressiva e lesões estruturais em órgãos-alvo prioritários:
+- Coração: Hipertrofia ventricular esquerda concêntrica, cardiopatia isquêmica e disfunção diastólica.
+- Cérebro: Acidente vascular cerebral isquêmico e hemorrágico, microangiopatia e leucoencefalopatia vascular.
+- Rins: Glomeruloesclerose hipertensiva, proteinúria, microalbuminúria e perda acelerada do ritmo de filtração glomerular.
+- Vasos e Retina: Retinopatia hipertensiva (espessamento arteriolar, exsudatos e hemorragias) e rigidez aórtica com perda de complacência elástica.
+
+3. DESAFIOS DA ADESÃO TERAPÊUTICA E COMUNICAÇÃO EM SAÚDE
+A assintomatologia típica das fases iniciais da HAS resulta em baixas taxas de adesão medicamentosa e abandono precoce do tratamento ambulatorial. A abordagem efetiva exige:
+- Medidas Não Farmacológicas: Redução do consumo de sódio para menos de 2g diários, cessação definitiva do tabagismo, moderação no etilismo, controle ponderal (meta de IMC entre 18,5 e 24,9 kg/m²) e prática regular de atividade física aeróbica estruturada.
+- Farmacoterapia de Primeira Linha no SUS: Diuréticos tiazídicos (Hidroclorotiazida), Inibidores da ECA (Enalapril), Bloqueadores dos Receptores de Angiotensina (Losartana) e Bloqueadores de Canais de Cálcio (Anlodipino).
+- Relação Médico-Paciente e Letramento em Saúde: A educação em saúde, uso de lembretes estruturados e suporte por ferramentas de telemonitoramento e agentes virtuais mostram-se decisivos para estabilização das metas pressóricas na comunidade.

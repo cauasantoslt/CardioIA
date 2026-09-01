@@ -1,0 +1,20 @@
+DIRETRIZ CLÍNICA: MANEJO DA INSUFICIÊNCIA CARDÍACA CRÔNICA E AGUDA NO SUS
+Fonte: Ministério da Saúde / CONITEC / Sociedade Brasileira de Cardiologia (SBC)
+Área Temática: Atenção Especializada e Básica - Saúde Cardiovascular
+
+1. DEFINIÇÃO E FISIOPATOLOGIA
+A Insuficiência Cardíaca (IC) é uma síndrome clínica complexa de caráter sistêmico, resultante de anormalidades estruturais ou funcionais do miocárdio que comprometem o enchimento ventricular ou a ejeção de sangue. Pode ser classificada conforme a fração de ejeção do ventrículo esquerdo (FEVE): IC com fração de ejeção reduzida (ICFEr, FEVE < 40%), levemente reduzida (ICFElr, FEVE 40-49%) e preservada (ICFEp, FEVE >= 50%).
+
+2. SINTOMATOLOGIA E CRITÉRIOS DIAGNÓSTICOS (CRITÉRIOS DE FRAMINGHAM)
+O diagnóstico clínico fundamenta-se na identificação de critérios maiores e menores:
+- Critérios Maiores: Dispneia paroxística noturna, ortopneia, turgência jugular patológica a 45 graus, estertores crepitantes pulmonares bibasais, cardiomegalia radiológica, edema agudo de pulmão e refluxo hepatojugular.
+- Critérios Menores: Edema bilateral de membros inferiores (edema maleolar), tosse noturna persistente, dispneia aos esforços habituais, hepatomegalia congestiva, derrame pleural e taquicardia em repouso (frequência cardíaca > 120 bpm).
+O estadiamento funcional adota a classificação da New York Heart Association (NYHA), variando de Classe I (ausência de sintomas em atividades cotidianas) a Classe IV (sintomas graves incapacitantes presentes em repouso absoluto).
+
+3. PROTOCOLO TERAPÊUTICO FARMACOLÓGICO NO SUS
+O manejo ambulatorial busca redução de mortalidade e hospitalização, fundamentando-se no bloqueio neuro-hormonal quádruplo:
+a) Inibidores da Enzima Conversora de Angiotensina (IECA - Enalapril) ou Bloqueadores dos Receptores de Angiotensina (BRA - Losartana). Em casos refratários, substituição por Sacubitril/Valsartana.
+b) Betabloqueadores cardiosseletivos (Succinato de Metoprolol, Carvedilol ou Bisoprolol) para controle simpático e remodelamento reverso.
+c) Antagonistas dos Receptores de Mineralocorticoides (Espironolactona), monitorando função renal e potássio sérico.
+d) Inibidores de SGLT2 (Dapagliflozina ou Empagliflozina) pela comprovada redução de desfechos cardiovasculares.
+e) Diuréticos de alça (Furosemida) indicados pontualmente para alívio de congestão e hipervolemia.
