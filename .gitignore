@@ -21,3 +21,6 @@ env/
 data/raw_images/
 *.zip
 *.tar.gz
+
+
+.gitignore
