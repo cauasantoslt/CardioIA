@@ -8,7 +8,7 @@
 
 <br>
 
-# 🫀 CardioIA: A Nova Era da Cardiologia Inteligente
+# CardioIA: A Nova Era da Cardiologia Inteligente
 
 > **Fase 1: Batimentos de Dados – Mapeando o Coração Moderno**  
 > **Curso:** Inteligência Artificial (PBL - Project Based Learning)  
