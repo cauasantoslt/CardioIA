@@ -26,4 +26,5 @@ data/raw_images/
 **/node_modules/
 **/dist/
 .env.local
-
+
+.gitignore
