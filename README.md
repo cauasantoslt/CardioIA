@@ -10,7 +10,7 @@
 
 # CardioIA: A Nova Era da Cardiologia Inteligente
 
-> **Fase 1: Batimentos de Dados – Mapeando o Coração Moderno**  
+> **Fase2 - IA entre Robôs, Sinapses e Medicina**  
 > **Curso:** Inteligência Artificial (PBL - Project Based Learning)  
 > **Instituição:** FIAP (Faculdade de Informática e Administração Paulista)
 
@@ -156,7 +156,7 @@ Pipeline de Deep Learning para classificação binária de exames de Eletrocardi
 
 | Fase / Entrega | Link do Vídeo | Descrição |
 | :--- | :--- | :--- |
-| **Fase 2: Diagnóstico Automatizado & Modelos** | [Link no YouTube (Vídeo Não Listado)](https://www.youtube.com/watch?v=SEU_LINK_AQUI) | Apresentação em até 4 min dos scripts de extração, treino do modelo de triagem, notebook e discussão de governança. |
+| **Fase 2: Diagnóstico Automatizado & Modelos** | [Link no YouTube (Vídeo Não Listado)](https://youtu.be/d6C0rwUkQXQ) | Apresentação em até 4 min dos scripts de extração, treino do modelo de triagem, notebook e discussão de governança. |
 | **Ir Além 1: Portal Web CardioIA (React)** | [Link no YouTube (Vídeo Não Listado)](https://www.youtube.com/watch?v=SEU_LINK_AQUI) | Demonstração do portal: login, proteção de rotas, dashboard, triagem e agendamento com useReducer. |
 
 ---

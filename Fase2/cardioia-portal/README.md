@@ -64,4 +64,4 @@ O portal estará disponível em: `http://localhost:5173/`
 ---
 
 ## 🎥 Demonstração em Vídeo
-* **Link da Apresentação no YouTube:** [Adicione aqui o seu link de vídeo do YouTube não listado]
+* **Link da Apresentação no YouTube:** [Assista ao vídeo no YouTube](https://youtu.be/d6C0rwUkQXQ)
