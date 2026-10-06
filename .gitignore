@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches de IDEs e Sistemas Operacionais
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Ambientes Virtuais
+venv/
+env/
+.env
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Bloqueio de diretórios pesados de imagens locais (hospedadas no Drive)
+data/raw_images/
+*.zip
+*.tar.gz
+
+# Node / Web App (cardioia-portal)
+**/node_modules/
+**/dist/
+.env.local
+

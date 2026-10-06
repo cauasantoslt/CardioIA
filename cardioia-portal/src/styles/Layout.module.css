@@ -1,0 +1,26 @@
+.layoutWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-slate);
+}
+
+.bodyContainer {
+  display: flex;
+  flex: 1;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 2rem 2.25rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1.25rem 1rem;
+  }
+}

@@ -1,0 +1,118 @@
+.sidebar {
+  width: 260px;
+  background-color: var(--card-bg);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 70px);
+  position: sticky;
+  top: 70px;
+  padding: 1.5rem 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.navGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.navLink:hover {
+  background-color: var(--clinical-blue-soft);
+  color: var(--clinical-blue);
+  transform: translateX(3px);
+}
+
+.navLinkActive {
+  background: linear-gradient(135deg, var(--clinical-blue) 0%, #1d4ed8 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.navLinkActive .linkIcon {
+  color: #ffffff;
+}
+
+.linkIcon {
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.sidebarFooter {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.studentCard {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: var(--radius-md);
+  padding: 0.9rem;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+.fiapBadge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #ef4444;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.studentName {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.studentRm {
+  font-size: 0.74rem;
+  color: #94a3b8;
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    width: 80px;
+    padding: 1rem 0.5rem;
+  }
+  .navLabel, .studentCard {
+    display: none;
+  }
+  .navLink span {
+    display: none;
+  }
+  .navLink {
+    justify-content: center;
+    padding: 0.8rem;
+  }
+}

@@ -17,7 +17,6 @@
 ---
 
 ## 👥 Integrantes
-* **Grupo:** 82
 * **Aluno:** [Cauã Santos](https://www.linkedin.com/in/cauasantoslt) — **RM:** 566599
 
 ### 👩‍🏫 Professores
@@ -117,23 +116,115 @@ Reunimos mais de 100 imagens de exames de Eletrocardiograma (ECG) organizadas na
 
 ---
 
-## 📁 5. Estrutura de Pastas
+## 🩺 5. Fase 2 – Diagnóstico Automatizado: IA no Estetoscópio Digital
+
+Nesta fase, implementamos os módulos de automação diagnóstica e suporte à decisão médica, unindo **Processamento de Linguagem Natural (NLP)**, **Machine Learning Supervisionado**, **Visão Computacional com Redes Neurais** e um **Portal Web Interativo**:
+
+### 5.1. Parte 1 – Extração de Sintomas e Mapeamento Ontológico de Doenças
+* **Entrada Textual (`Fase2/data/frases_sintomas.txt`):** 10 relatos clínicos ricos descrevendo o que o paciente sente, quando os sintomas iniciaram e como afetam suas atividades diárias.
+* **Mapa de Conhecimento (`Fase2/data/mapa_conhecimento.csv`):** Ontologia médica relacionando pares de sintomas (*Sintoma 1 | Sintoma 2*) às patologias correspondentes (*Síndrome Coronariana Aguda/IAM*, *Insuficiência Cardíaca*, *Fibrilação Atrial*, *Hipotensão/Pré-Síncope*, etc.).
+* **Pipeline de Extração (`Fase2/src/extracao_diagnostico.py`):** Algoritmo de normalização Unicode (remoção de acentos e conversão para caixa baixa), busca léxica por entidades clínicas e inferência diagnóstica estruturada.
+
+### 5.2. Parte 2 – Classificador de Triagem Textual (TF-IDF + Machine Learning)
+* **Dataset de Triagem (`Fase2/data/triagem_risco.csv`):** 32 relatos médicos balanceados (16 de *alto risco* e 16 de *baixo risco*) simulando o Protocolo de Manchester para priorização de atendimento emergencial.
+* **Vetorização Numérica:** Algoritmo **TF-IDF** (Term Frequency - Inverse Document Frequency) configurado com unigramas e bigramas (`ngram_range=(1, 2)`) e stop-words médicas em português.
+* **Modelo Preditivo:** Regressão Logística com regularização L2, alcançando **100% de Acurácia** e **100% de Recall** para a classe crítica de alto risco no conjunto de teste.
+* **Scripts e Notebook:**
+  * Script standalone: `Fase2/src/classificador_risco.py`
+  * Notebook unificado: `Fase2/notebooks/classificador_risco.ipynb` (com matriz de confusão gráfica, explicabilidade léxica e inferência em tempo real com probabilidades).
+
+### 5.3. Ir Além 1 – Portal Web CardioIA (`cardioia-portal/`)
+Aplicação web responsiva construída em **React 19 + Vite** com:
+* **Autenticação Simulada (Context API):** Gerenciamento de sessão e persistência de token JWT falso em `localStorage`.
+* **Proteção de Rotas:** Componente `ProtectedRoute` impedindo acesso a áreas restritas sem autenticação.
+* **Dashboard Clínico:** Indicadores em tempo real (Total em Triagem, Consultas Hoje, Casos Críticos, Ocupação de Leitos) e banner de alertas emergenciais.
+* **Triagem de Pacientes:** 10 pacientes clínicos com sinais vitais (P.A., Frequência Cardíaca, SpO2), queixa em texto livre, filtro por nível de risco e busca instantânea.
+* **Agendamento de Consultas:** Gerenciamento complexo com `useReducer` (`ADD_APPOINTMENT`, `CANCEL_APPOINTMENT`, `FILTER_BY_DOCTOR`) e controle de inputs com `useState`.
+* **Estilização Modular:** CSS Modules (`*.module.css`) com design system hospitalar moderno.
+
+### 5.4. Ir Além 2 – Diagnóstico Visual de ECG com Rede Neural MLP em Keras (`Fase2/notebooks/mlp_ecg_diagnostico.ipynb`)
+Pipeline de Deep Learning para classificação binária de exames de Eletrocardiograma (Normal vs. Anormal):
+* **Dataset de ECG:** Imagens da pasta `Fase1/assets/images/ECG_Image_data/` (Normal: `N`; Anormal: `M`, `V`, `S`).
+* **Pré-processamento:** Redimensionamento para $64 \times 64$ píxeis em escala de cinza, normalização $[0, 1]$ e achatamento (*flatten*) para vetor de 4096 features de entrada.
+* **Arquitetura Keras:** Camada Dense (256, ReLU, He Normal), BatchNormalization, Dropout(0.3), Dense (64, ReLU), Dropout(0.2) e Saída Dense (1, Sigmoid).
+* **Treinamento & Monitoramento:** `EarlyStopping(patience=5)` com Adam ($\alpha = 0.001$), curvas de perda/acurácia, Matriz de Confusão, Relatório de Classificação e Curva ROC/AUC.
+* **Governança:** Discussão crítica sobre limitações do MLP frente a Redes Convolucionais (CNNs da Fase 4) e assimetria clínica dos Falsos Negativos.
+
+---
+
+## 🎥 Vídeos de Demonstração (YouTube - Não Listados)
+
+| Fase / Entrega | Link do Vídeo | Descrição |
+| :--- | :--- | :--- |
+| **Fase 2: Diagnóstico Automatizado & Modelos** | [Link no YouTube (Vídeo Não Listado)](https://www.youtube.com/watch?v=SEU_LINK_AQUI) | Apresentação em até 4 min dos scripts de extração, treino do modelo de triagem, notebook e discussão de governança. |
+| **Ir Além 1: Portal Web CardioIA (React)** | [Link no YouTube (Vídeo Não Listado)](https://www.youtube.com/watch?v=SEU_LINK_AQUI) | Demonstração do portal: login, proteção de rotas, dashboard, triagem e agendamento com useReducer. |
+
+---
+
+## 📁 6. Estrutura de Pastas Atualizada
 
 ```bash
 CardioIA/
 ├── Fase1/
 │   ├── assets/
 │   │   ├── docs/
-│   │   ├── images/
-│   │   │   └── ECG_Image_data/
-│   │   └── logo-fiap.png
+│   │   └── images/
+│   │       └── ECG_Image_data/
+│   │           ├── train/ (Classes: F, M, N, Q, S, V)
+│   │           └── test/
 │   └── data/
 │       ├── processed/
 │       └── raw/
-├── notebooks/
+├── Fase2/
+│   ├── data/
+│   │   ├── frases_sintomas.txt     # 10 relatos clínicos
+│   │   ├── mapa_conhecimento.csv   # Ontologia clínica
+│   │   └── triagem_risco.csv       # 32 frases rotuladas (alto/baixo risco)
+│   ├── notebooks/
+│   │   ├── classificador_risco.ipynb # Notebook unificado (Partes 1 e 2)
+│   │   └── mlp_ecg_diagnostico.ipynb # Ir Além 2 (MLP em Keras para ECG)
+│   └── src/
+│       ├── extracao_diagnostico.py # Script de extração ontológica
+│       └── classificador_risco.py  # Script de treino e inferência TF-IDF
+├── cardioia-portal/                # Ir Além 1: Portal Web (React + Vite)
+│   ├── src/
+│   │   ├── components/             # Header, Sidebar, StatCard, PatientCard, etc.
+│   │   ├── contexts/               # AuthContext.jsx (JWT simulado)
+│   │   ├── pages/                  # Login, Dashboard, Patients, Appointments
+│   │   ├── reducers/               # appointmentReducer.js
+│   │   ├── services/               # api.js
+│   │   └── styles/                 # *.module.css
+│   ├── package.json
+│   └── README.md
 ├── .gitignore
 └── README.md
 ```
+
+---
+
+## ⚙️ Como Executar os Módulos da Fase 2
+
+### 1. Extração Ontológica e Classificador de Triagem (CLI)
+```bash
+# Executar a extração baseada no mapa de conhecimento
+python Fase2/src/extracao_diagnostico.py
+
+# Treinar e testar o classificador TF-IDF de triagem
+python Fase2/src/classificador_risco.py
+```
+
+### 2. Jupyter Notebooks
+Abra o JupyterLab ou VS Code e execute:
+* `Fase2/notebooks/classificador_risco.ipynb` (Partes 1 e 2 integradas com dados da pasta `data/`).
+* `Fase2/notebooks/mlp_ecg_diagnostico.ipynb` (Ir Além 2 - Rede Neural MLP com Keras para imagens de ECG).
+
+### 3. Portal Web CardioIA (React + Vite)
+```bash
+cd cardioia-portal
+npm install
+npm run dev
+```
+Acesse em: `http://localhost:5173` (Credenciais: `medico@cardioia.com` / `cardio123`).
 
 ---
 
@@ -141,18 +232,18 @@ CardioIA/
 
 * **0.1.0 - 01/09/2026**
   * Entrega da **Fase 1 (Batimentos de Dados)**.
-  * Estruturação e curadoria dos datasets clínicos numéricos (real e sintético).
-  * Coleta e contextualização do corpus textual médico para NLP.
-  * Organização do acervo de imagens de exames de ECG por classes diagnósticas AAMI para Visão Computacional.
-  * Documentação completa de governança, viés e dicionário clínico.
-* **0.2.0 - XX/XX/2026**
-  * *Fase 2: Diagnóstico Automatizado - Modelos Supervisionados de IA.*
-* **0.3.0 - XX/XX/2026**
+* **0.2.0 - 05/10/2026**
+  * Entrega da **Fase 2 (Diagnóstico Automatizado – IA no Estetoscópio Digital)**.
+  * Módulo de extração ontológica e inferência diagnóstica a partir de queixas em texto livre.
+  * Classificador estatístico supervisionado com TF-IDF e Regressão Logística para triagem de risco clínico.
+  * Implementação da interface web interativa do portal hospitalar em React + Vite (Ir Além 1).
+  * Implementação do modelo de rede neural profunda MLP em Keras para diagnóstico visual de ECG (Ir Além 2).
+* **0.3.0 - Em breve**
   * *Fase 3: Monitoramento Contínuo - IoT e Sensores Médicos.*
-* **0.4.0 - XX/XX/2026**
-  * *Fase 4: Coração em Imagens - Visão Computacional em Exames.*
-* **0.5.0 - XX/XX/2026**
-  * *Fase 5: Assistente Cardiológico Virtual com NLP.*
+* **0.4.0 - Em breve**
+  * *Fase 4: Coração em Imagens - Visão Computacional com CNNs.*
+* **0.5.0 - Em breve**
+  * *Fase 5: Assistente Cardiológico Virtual com RAG & NLP.*
 
 ---
 

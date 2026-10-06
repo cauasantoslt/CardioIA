@@ -1,0 +1,171 @@
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card:hover {
+  border-color: rgba(37, 99, 235, 0.4);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.patientMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary-navy);
+  line-height: 1.2;
+}
+
+.demographics {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.riskBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.highRisk {
+  background-color: var(--cardio-red-soft);
+  color: var(--cardio-red);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+}
+
+.lowRisk {
+  background-color: var(--success-emerald-soft);
+  color: var(--success-emerald);
+  border: 1px solid rgba(5, 150, 105, 0.25);
+}
+
+.pulsingDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--cardio-red);
+  box-shadow: 0 0 8px rgba(220, 38, 38, 0.8);
+  animation: pulseHeart 1.5s infinite;
+}
+
+.calmDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--success-emerald);
+}
+
+.vitalsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  background-color: var(--bg-slate);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+}
+
+.vitalItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.vitalLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.vitalValue {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary-navy);
+  margin-top: 0.1rem;
+}
+
+.complaintSection {
+  background-color: #fafaf9;
+  border-left: 3px solid var(--clinical-blue);
+  padding: 0.65rem 0.75rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.complaintText {
+  font-size: 0.84rem;
+  color: #334155;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.ecgBanner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.ecgHighlight {
+  font-weight: 600;
+  color: var(--primary-navy);
+}
+
+.footerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.locationBadge {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  font-weight: 500;
+}
+
+.actionBtn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--clinical-blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.actionBtn:hover {
+  background-color: var(--clinical-blue-soft);
+  color: var(--clinical-blue-hover);
+}

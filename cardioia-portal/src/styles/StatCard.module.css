@@ -1,0 +1,110 @@
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+.topRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.iconWrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconBlue {
+  background-color: var(--clinical-blue-soft);
+  color: var(--clinical-blue);
+}
+
+.iconRed {
+  background-color: var(--cardio-red-soft);
+  color: var(--cardio-red);
+}
+
+.iconEmerald {
+  background-color: var(--success-emerald-soft);
+  color: var(--success-emerald);
+}
+
+.iconAmber {
+  background-color: var(--warning-amber-soft);
+  color: var(--warning-amber);
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary-navy);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.bottomRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+.badgePositive {
+  background-color: var(--success-emerald-soft);
+  color: var(--success-emerald);
+}
+
+.badgeAlert {
+  background-color: var(--cardio-red-soft);
+  color: var(--cardio-red);
+}
+
+.badgeNeutral {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-weight: 500;
+}
