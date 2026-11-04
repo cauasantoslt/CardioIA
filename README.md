@@ -10,7 +10,7 @@
 
 # CardioIA: A Nova Era da Cardiologia Inteligente
 
-> **Fase2 - IA entre Robôs, Sinapses e Medicina**  
+> **Fase 3 - Monitoramento Contínuo: IoT na Saúde (Edge, Fog & Cloud Computing)**  
 > **Curso:** Inteligência Artificial (PBL - Project Based Learning)  
 > **Instituição:** FIAP (Faculdade de Informática e Administração Paulista)
 
@@ -152,6 +152,41 @@ Pipeline de Deep Learning para classificação binária de exames de Eletrocardi
 
 ---
 
+## 📡 6. Fase 3 – Monitoramento Contínuo: IoT na Saúde (Edge, Fog & Cloud)
+
+Na **Fase 3**, expandimos o ecossistema **CardioIA** com o **CardioIA Wear**, um protótipo de dispositivo vestível (*wearable*) em **ESP32 (Wokwi)** integrado via **MQTT (HiveMQ)** a um dashboard em tempo real no **Node-RED** e a um subsistema automatizado **REST + RPA em Python**:
+
+### 6.1. Parte 1 – Armazenamento e Processamento Local (Edge Computing)
+* **Link do Projeto no Wokwi:** [**https://wokwi.com/projects/479801389695851521**](https://wokwi.com/projects/479801389695851521)
+* **Circuito e Firmware ESP32 (`Fase3/esp32_wearable/`):**
+  * **Sensores:** **DHT22** obrigatório (temperatura corporal °C e umidade/sudorese %), **Botão de Pressão + Potenciômetro** (frequência cardíaca em BPM, com modo manual por interrupção e modo automático com variabilidade fisiológica) e **MPU6050 I2C** (acelerômetro 3 eixos a 20 Hz para nível de atividade, detecção de queda $> 2{,}5\,g$ e imobilidade prolongada).
+  * **Conectividade e Atuadores:** chave deslizante `swWifi` controlando a variável booleana `wifiSimulado` (simulando quedas de rede), chave `swModo` (`AUTO`/`MANUAL`), 3 LEDs (`ONLINE`, `OFFLINE`, `ALERTA`) e buzzer de alarme local.
+  * **Resiliência Offline Alinhada ao Negócio:** capacidade dimensionada para **6.600 amostras** (~8h20 de autonomia offline em produção a 1 leitura/5 s), dividida em **duas filas independentes**: **Fila Crítica Prioritária (`600` amostras)** e **Fila Normal (`6.000` amostras)**, impedindo que leituras normais sobrescrevam alertas médicos.
+  * **Duplo Backend (`SPIFFS` + `RAM`):** gravação em arquivos CSV segmentados (`/n_*.csv` e `/c_*.csv`) na Flash **SPIFFS** em chips reais, com *fallback* automático para buffer circular em **RAM** no simulador Wokwi. Ao reconectar, sincroniza primeiro os alertas críticos em lotes não-bloqueantes (`Serial.println("[SYNC->CLOUD] ...")` + publicação MQTT em `/backlog`) e apaga o arquivo/registro local após confirmação.
+* **Relatório Técnico Parte 1:** [`Fase3/relatorios/Relatorio_Parte1_Edge_Computing.md`](Fase3/relatorios/Relatorio_Parte1_Edge_Computing.md)
+
+![Simulação de Resiliência Offline no Edge](Fase3/assets/simulacao_resiliencia_edge.png)
+
+### 6.2. Parte 2 – Transmissão para Nuvem e Visualização (Fog/Cloud Computing)
+* **Arquitetura MQTT (`broker.hivemq.com:1883` / `HiveMQ Cloud TLS 8883`):**
+  * Tópicos estruturados em `cardioia/rm566599/wear01/`: `/telemetria` (QoS 0), `/backlog` (QoS 0), `/alerta` (QoS 1), `/status` (QoS 1 + *Retained* + *Last Will and Testament*) e `/cmd` (QoS 1, comandos remotos `silenciar` e `status`).
+* **Dashboard Interativo no Node-RED (`Fase3/node-red/cardioia_dashboard_flow.json`):**
+  * Camada **Fog** que valida os pacotes e reavalia os limites clínicos ($\text{FC} > 120$ ou $< 50\text{ bpm}$, $\text{Temp} > 38{,}0$ ou $< 35{,}0\,^\circ\text{C}$, queda e imobilidade);
+  * **Gráficos em tempo real (`ui_chart`)** de Frequência Cardíaca e Temperatura Corporal com linhas tracejadas dos limites clínicos;
+  * **Medidores (`ui_gauge`)** de Temperatura (°C), Umidade/Sudorese (%) e Movimento ($g$);
+  * **Indicador visual de alerta (`ui_template` + `ui_toast`)** com LED virtual animado (verde/amarelo/vermelho pulsante), descrição dos riscos ativos, *watchdog* de fluxo de dados, painel de resiliência do ESP32 e tabela histórica de eventos e sincronizações.
+* **Relatório Técnico Parte 2:** [`Fase3/relatorios/Relatorio_Parte2_MQTT_e_Dashboard.md`](Fase3/relatorios/Relatorio_Parte2_MQTT_e_Dashboard.md)
+
+![Dashboard Node-RED CardioIA](Fase3/assets/dashboard_nodered_preview.png)
+
+### 6.3. Ir Além 1 – Comunicação Automatizada com REST, Risco Clínico e E-mail (RPA)
+* **Servidor e Cliente REST (`Fase3/ir_alem_1/api_server.py` e `cliente_rest.py`):** API em **Flask + SQLite** autenticada via `X-API-Key` para ingestão individual/em lote (`POST /api/v1/leituras`), consulta incremental (`GET /api/v1/leituras`), consolidação por paciente (`/ultima`, `/resumo`) e auditoria de alertas (`/alertas`).
+* **Motor de Risco Clínico (`Fase3/ir_alem_1/risco.py`):** avalia regras instantâneas (`TAQUICARDIA`, `BRADICARDIA`, `SEM_PULSO`, `FEBRE`, `HIPOTERMIA`, `SUSPEITA_SEPSE` por critérios SIRS, `QUEDA`) e regras de janela deslizante (`TAQUICARDIA_SUSTENTADA`, `AUSENCIA_MOVIMENTO` e `IMOBILIDADE_COM_FC_BAIXA` para suspeita de síncope).
+* **Automação RPA de E-mail (`Fase3/ir_alem_1/monitor_rpa.py` e `notificador_email.py`):** consome a API continuamente, aplica *cooldown* anti-spam por código de risco e dispara e-mails **MIME Multipart (HTML + texto)** via SMTP/STARTTLS ou gravação auditável `.eml` em `Fase3/ir_alem_1/outbox/`.
+* **Relatório Técnico Ir Além 1:** [`Fase3/relatorios/Relatorio_Ir_Alem_1_REST_e_RPA.md`](Fase3/relatorios/Relatorio_Ir_Alem_1_REST_e_RPA.md)
+
+---
+
 ## 🎥 Vídeos de Demonstração (YouTube - Não Listados)
 
 | Fase / Entrega | Link do Vídeo | Descrição |
@@ -161,7 +196,7 @@ Pipeline de Deep Learning para classificação binária de exames de Eletrocardi
 
 ---
 
-## 📁 6. Estrutura de Pastas Atualizada
+## 📁 7. Estrutura de Pastas Atualizada
 
 ```bash
 CardioIA/
@@ -176,28 +211,77 @@ CardioIA/
 │       ├── processed/
 │       └── raw/
 ├── Fase2/
+│   ├── cardioia-portal/                # Ir Além 1 (Fase 2): Portal Web (React + Vite)
 │   ├── data/
-│   │   ├── frases_sintomas.txt     # 10 relatos clínicos
-│   │   ├── mapa_conhecimento.csv   # Ontologia clínica
-│   │   └── triagem_risco.csv       # 32 frases rotuladas (alto/baixo risco)
+│   │   ├── frases_sintomas.txt         # 10 relatos clínicos
+│   │   ├── mapa_conhecimento.csv       # Ontologia clínica
+│   │   └── triagem_risco.csv           # 32 frases rotuladas (alto/baixo risco)
 │   ├── notebooks/
-│   │   ├── classificador_risco.ipynb # Notebook unificado (Partes 1 e 2)
-│   │   └── mlp_ecg_diagnostico.ipynb # Ir Além 2 (MLP em Keras para ECG)
+│   │   ├── classificador_risco.ipynb   # Notebook unificado (Partes 1 e 2)
+│   │   └── mlp_ecg_diagnostico.ipynb   # Ir Além 2 (MLP em Keras para ECG)
 │   └── src/
-│       ├── extracao_diagnostico.py # Script de extração ontológica
-│       └── classificador_risco.py  # Script de treino e inferência TF-IDF
-├── cardioia-portal/                # Ir Além 1: Portal Web (React + Vite)
-│   ├── src/
-│   │   ├── components/             # Header, Sidebar, StatCard, PatientCard, etc.
-│   │   ├── contexts/               # AuthContext.jsx (JWT simulado)
-│   │   ├── pages/                  # Login, Dashboard, Patients, Appointments
-│   │   ├── reducers/               # appointmentReducer.js
-│   │   ├── services/               # api.js
-│   │   └── styles/                 # *.module.css
-│   ├── package.json
-│   └── README.md
+│       ├── extracao_diagnostico.py     # Script de extração ontológica
+│       └── classificador_risco.py      # Script de treino e inferência TF-IDF
+├── Fase3/                              # Fase 3: Monitoramento Contínuo - IoT na Saúde
+│   ├── assets/                         # Figuras e evidências visuais (Edge e Dashboard)
+│   ├── esp32_wearable/                 # Parte 1: Firmware ESP32 + Circuito Wokwi
+│   │   ├── src/main.cpp                # Código C++ comentado (SPIFFS/RAM + MQTT)
+│   │   ├── sketch.ino                  # Cópia .ino para Wokwi Web / Arduino IDE
+│   │   ├── diagram.json                # Circuito Wokwi (ESP32, DHT22, MPU6050, botão, pot, LEDs)
+│   │   ├── libraries.txt               # Bibliotecas do Wokwi Web
+│   │   ├── platformio.ini              # Configuração de build PlatformIO
+│   │   └── wokwi.toml                  # Integração VS Code Wokwi Simulator
+│   ├── node-red/                       # Parte 2: Fog Computing & Visualização
+│   │   ├── cardioia_dashboard_flow.json # Export completo do fluxo Node-RED (34 nós)
+│   │   └── simulador_mqtt.py           # Publicador MQTT para testar o dashboard sem Wokwi
+│   ├── ir_alem_1/                      # Ir Além 1: API REST, Risco Clínico e E-mail (RPA)
+│   │   ├── api_server.py               # Servidor REST (Flask + SQLite)
+│   │   ├── cliente_rest.py             # Cliente HTTP REST (requests)
+│   │   ├── risco.py                    # Motor de risco (regras instantâneas e janela)
+│   │   ├── notificador_email.py        # Disparo de e-mail MIME/SMTP ou outbox/*.eml
+│   │   ├── monitor_rpa.py              # Robô RPA de polling e disparo com cooldown
+│   │   ├── simulador_wearable.py       # Simulador de cenários + ponte MQTT -> REST
+│   │   ├── demo_completa.py            # Execução e teste ponta a ponta automatizado
+│   │   └── outbox/                     # E-mails .eml gerados automaticamente
+│   └── relatorios/                     # Relatórios técnicos detalhados da Fase 3
+│       ├── Relatorio_Parte1_Edge_Computing.md
+│       ├── Relatorio_Parte2_MQTT_e_Dashboard.md
+│       └── Relatorio_Ir_Alem_1_REST_e_RPA.md
+├── requirements.txt
 ├── .gitignore
 └── README.md
+```
+
+---
+
+## ⚙️ Como Executar os Módulos da Fase 3
+
+### 1. Parte 1 – Simulação do Wearable ESP32 no Wokwi
+* **Link direto no Wokwi Web:** [**https://wokwi.com/projects/479801389695851521**](https://wokwi.com/projects/479801389695851521)
+* **No VS Code (extensão Wokwi):** abra a pasta `Fase3/esp32_wearable/`, pressione `F1` $\rightarrow$ **`Wokwi: Start Simulator`**.
+* **Controles durante a simulação:**
+  * Chave esquerda (`swWifi`): desligue para simular queda de Wi-Fi (modo **OFFLINE**, LED amarelo acende e amostras vão para as filas locais) e religue para ver a sincronização em lote no Monitor Serial (`[SYNC->CLOUD]`) e via MQTT;
+  * Chave direita (`swModo`): alterna entre pulso automático (controlado pelo potenciômetro de 30 a 200 bpm) e manual (botão vermelho / tecla `P`);
+  * Clique no **DHT22** para elevar a temperatura acima de `38.0 °C` ou no **MPU6050** para simular queda/imobilidade.
+
+### 2. Parte 2 – Dashboard no Node-RED + Broker MQTT
+```bash
+# 1. Importe Fase3/node-red/cardioia_dashboard_flow.json no Node-RED (http://127.0.0.1:1880)
+# 2. Acesse o dashboard em http://127.0.0.1:1880/ui
+# 3. (Opcional) Para alimentar o dashboard sem abrir o Wokwi:
+python Fase3/node-red/simulador_mqtt.py
+```
+
+### 3. Ir Além 1 – API REST, Verificação de Risco e E-mail Automatizado (RPA)
+```bash
+# Execução ponta a ponta em um único comando (sobe a API, envia 16 leituras, roda o RPA e gera os .eml):
+python Fase3/ir_alem_1/demo_completa.py
+```
+Ou em terminais separados:
+```bash
+python Fase3/ir_alem_1/api_server.py           # Terminal 1: API REST na porta 5000
+python Fase3/ir_alem_1/monitor_rpa.py          # Terminal 2: Robô RPA monitorando a API
+python Fase3/ir_alem_1/simulador_wearable.py   # Terminal 3: Envia cenário clínico (ou --mqtt-bridge)
 ```
 
 ---
@@ -220,7 +304,7 @@ Abra o JupyterLab ou VS Code e execute:
 
 ### 3. Portal Web CardioIA (React + Vite)
 ```bash
-cd cardioia-portal
+cd Fase2/cardioia-portal
 npm install
 npm run dev
 ```
@@ -238,8 +322,11 @@ Acesse em: `http://localhost:5173` (Credenciais: `medico@cardioia.com` / `cardio
   * Classificador estatístico supervisionado com TF-IDF e Regressão Logística para triagem de risco clínico.
   * Implementação da interface web interativa do portal hospitalar em React + Vite (Ir Além 1).
   * Implementação do modelo de rede neural profunda MLP em Keras para diagnóstico visual de ECG (Ir Além 2).
-* **0.3.0 - Em breve**
-  * *Fase 3: Monitoramento Contínuo - IoT e Sensores Médicos.*
+* **0.3.0 - 04/11/2026**
+  * Entrega da **Fase 3 (Monitoramento Contínuo – IoT na Saúde)**.
+  * Protótipo de wearable em ESP32 no Wokwi com DHT22, sensor de pulso cardíaco (botão + gerador automático), acelerômetro MPU6050, triagem clínica embarcada e resiliência offline priorizada em SPIFFS/RAM (Parte 1).
+  * Telemetria em tempo real via MQTT (HiveMQ) e dashboard interativo no Node-RED com validação na camada Fog, gráficos, gauges, LED virtual de alerta e controle remoto (Parte 2).
+  * API REST em Python/Flask, cliente HTTP, motor de verificação de risco (instantâneo e em janela deslizante) e automação RPA de envio de e-mail em caso de alerta (Ir Além 1).
 * **0.4.0 - Em breve**
   * *Fase 4: Coração em Imagens - Visão Computacional com CNNs.*
 * **0.5.0 - Em breve**

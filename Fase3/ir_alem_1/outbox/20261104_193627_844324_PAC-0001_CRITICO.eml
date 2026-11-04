@@ -1,0 +1,70 @@
+Subject:
+ [CardioIA] ALERTA CRITICO - PAC-0001 - TAQUICARDIA, FEBRE, SUSPEITA_SEPSE
+From: alertas@cardioia.local
+To: plantao.cardiologia@cardioia.local
+X-Priority: 1
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="===============1774452694884447406=="
+
+--===============1774452694884447406==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+ALERTA CardioIA - Monitoramento Cont=C3=ADnuo
+
+Paciente: PAC-0001  (dispositivo wear01)
+Coleta:   04/11/2026 19:35:36  (origem: live)
+
+Sinais vitais:
+  FC: 128 bpm | Temperatura: 38.4 =C2=B0C | Movimento: 0.18 g
+
+Riscos identificados:
+  - [CRITICO] TAQUICARDIA: Frequ=C3=AAncia card=C3=ADaca de 128 bpm (> 120)
+  - [CRITICO] FEBRE: Temperatura de 38.4 =C2=B0C (> 38.0)
+  - [CRITICO] SUSPEITA_SEPSE: Febre + FC elevada (128 bpm, 38.4 =C2=B0C) - cr=
+it=C3=A9rios SIRS
+
+A=C3=A7=C3=A3o sugerida: contatar o paciente e avaliar necessidade de atendim=
+ento.
+Mensagem autom=C3=A1tica - prot=C3=B3tipo acad=C3=AAmico, n=C3=A3o substitui =
+avalia=C3=A7=C3=A3o m=C3=A9dica.
+
+--===============1774452694884447406==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<html><body style=3D"font-family:Segoe UI,Arial,sans-serif;color:#222">
+  <div style=3D"max-width:560px;border:1px solid #ddd;border-radius:8px;overf=
+low:hidden">
+    <div style=3D"background:#c0392b;color:#fff;padding:14px 18px;font-size:1=
+8px">
+      &#10084; CardioIA &mdash; ALERTA CRITICO
+    </div>
+    <div style=3D"padding:16px 18px">
+      <p><b>Paciente:</b> PAC-0001 &nbsp; <b>Dispositivo:</b> wear01<br>
+         <b>Coleta:</b> 04/11/2026 19:35:36 (live)</p>
+      <table style=3D"border-collapse:collapse;width:100%;margin:8px 0">
+        <tr><td style=3D"padding:6px;border:1px solid #eee">Frequ=C3=AAncia c=
+ard=C3=ADaca</td><td style=3D"padding:6px;border:1px solid #eee"><b>128 bpm</=
+b></td></tr>
+        <tr><td style=3D"padding:6px;border:1px solid #eee">Temperatura</td><=
+td style=3D"padding:6px;border:1px solid #eee"><b>38.4 =C2=B0C</b></td></tr>
+        <tr><td style=3D"padding:6px;border:1px solid #eee">Movimento</td><td=
+ style=3D"padding:6px;border:1px solid #eee"><b>0.18 g</b></td></tr>
+      </table>
+      <p><b>Riscos identificados:</b></p><ul><li><b style=3D'color:#c0392b'>T=
+AQUICARDIA</b> - Frequ=C3=AAncia card=C3=ADaca de 128 bpm (> 120)</li><li><b =
+style=3D'color:#c0392b'>FEBRE</b> - Temperatura de 38.4 =C2=B0C (> 38.0)</li>=
+<li><b style=3D'color:#c0392b'>SUSPEITA_SEPSE</b> - Febre + FC elevada (128 b=
+pm, 38.4 =C2=B0C) - crit=C3=A9rios SIRS</li></ul>
+      <p style=3D"font-size:12px;color:#777">A=C3=A7=C3=A3o sugerida: contata=
+r o paciente e avaliar necessidade de atendimento.<br>
+      Mensagem autom=C3=A1tica &mdash; prot=C3=B3tipo acad=C3=AAmico FIAP, n=
+=C3=A3o substitui avalia=C3=A7=C3=A3o m=C3=A9dica.</p>
+    </div>
+  </div>
+</body></html>
+
+--===============1774452694884447406==--

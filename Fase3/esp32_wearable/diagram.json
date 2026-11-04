@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "author": "Cauã Santos (RM 566599) - CardioIA Fase 3",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -134.1,
+      "left": 186.6,
+      "attrs": { "temperature": "36.5", "humidity": "55" }
+    },
+    {
+      "type": "wokwi-mpu6050",
+      "id": "imu1",
+      "top": -130.98,
+      "left": -150.48,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btnPulso",
+      "top": 25.4,
+      "left": 297.6,
+      "attrs": { "color": "red", "label": "PULSO (tecla P)", "key": "p", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "potBpm",
+      "top": 152.3,
+      "left": -192.2,
+      "attrs": { "value": "270" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "swWifi",
+      "top": 254,
+      "left": -150.2,
+      "attrs": { "value": "1", "bounce": "0" }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "swModo",
+      "top": 254,
+      "left": -82.6,
+      "attrs": { "value": "1", "bounce": "0" }
+    },
+    { "type": "wokwi-led", "id": "ledOnline", "top": 140.4, "left": 291.8, "attrs": { "color": "limegreen", "label": "ONLINE" } },
+    { "type": "wokwi-led", "id": "ledOffline", "top": 140.4, "left": 340.2, "attrs": { "color": "yellow", "label": "OFFLINE" } },
+    { "type": "wokwi-led", "id": "ledAlerta", "top": 140.4, "left": 388.6, "attrs": { "color": "red", "label": "ALERTA" } },
+    { "type": "wokwi-resistor", "id": "r1", "top": 214.6, "left": 239.4, "rotate": 270, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 214.6, "left": 287.4, "rotate": 270, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r3", "top": 214.6, "left": 335.4, "rotate": 270, "attrs": { "value": "220" } },
+    { "type": "wokwi-buzzer", "id": "bz1", "top": -60, "left": 405, "attrs": { "volume": "0.2" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+
+    [ "dht1:VCC", "esp:3V3", "red", [] ],
+    [ "dht1:GND", "esp:GND.2", "black", [] ],
+    [ "dht1:SDA", "esp:15", "green", [] ],
+
+    [ "imu1:VCC", "esp:3V3", "red", [] ],
+    [ "imu1:GND", "esp:GND.1", "black", [] ],
+    [ "imu1:SDA", "esp:21", "blue", [] ],
+    [ "imu1:SCL", "esp:22", "orange", [] ],
+
+    [ "btnPulso:1.l", "esp:4", "purple", [] ],
+    [ "btnPulso:2.l", "esp:GND.3", "black", [] ],
+
+    [ "potBpm:VCC", "esp:3V3", "red", [] ],
+    [ "potBpm:GND", "esp:GND.1", "black", [] ],
+    [ "potBpm:SIG", "esp:34", "violet", [] ],
+
+    [ "swWifi:1", "esp:GND.1", "black", [] ],
+    [ "swWifi:2", "esp:27", "cyan", [] ],
+    [ "swWifi:3", "esp:3V3", "red", [] ],
+
+    [ "swModo:1", "esp:GND.1", "black", [] ],
+    [ "swModo:2", "esp:26", "magenta", [] ],
+    [ "swModo:3", "esp:3V3", "red", [] ],
+
+    [ "esp:18", "r1:2", "limegreen", [] ],
+    [ "r1:1", "ledOnline:A", "limegreen", [] ],
+    [ "ledOnline:C", "esp:GND.3", "black", [] ],
+
+    [ "esp:5", "r2:2", "gold", [] ],
+    [ "r2:1", "ledOffline:A", "gold", [] ],
+    [ "ledOffline:C", "esp:GND.3", "black", [] ],
+
+    [ "esp:19", "r3:2", "red", [] ],
+    [ "r3:1", "ledAlerta:A", "red", [] ],
+    [ "ledAlerta:C", "esp:GND.3", "black", [] ],
+
+    [ "bz1:2", "esp:23", "orange", [] ],
+    [ "bz1:1", "esp:GND.2", "black", [] ]
+  ],
+  "dependencies": {}
+}

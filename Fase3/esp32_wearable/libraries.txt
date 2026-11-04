@@ -1,0 +1,5 @@
+# Bibliotecas para o Wokwi Web (aba "Library Manager" / arquivo libraries.txt)
+DHT sensor library
+Adafruit Unified Sensor
+PubSubClient
+
