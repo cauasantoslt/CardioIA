@@ -10,7 +10,7 @@
 
 # CardioIA: A Nova Era da Cardiologia Inteligente
 
-> **Fase 3 - Monitoramento Contínuo: IoT na Saúde (Edge, Fog & Cloud Computing)**  
+> **Fase 4 - Assistente Cardiológico Virtual com Visão Computacional (CNNs, Transfer Learning, Fairness & Mobile)**  
 > **Curso:** Inteligência Artificial (PBL - Project Based Learning)  
 > **Instituição:** FIAP (Faculdade de Informática e Administração Paulista)
 
@@ -187,16 +187,66 @@ Na **Fase 3**, expandimos o ecossistema **CardioIA** com o **CardioIA Wear**, um
 
 ---
 
+## 🧠 7. Fase 4 – Assistente Cardiológico Virtual com Visão Computacional
+
+Na **Fase 4**, colocamos a **Visão Computacional com Deep Learning** no centro do **CardioIA**, construindo um pipeline completo de classificação de imagens de Eletrocardiograma (ECG — padrão internacional AAMI/MIT-BIH, 6 classes: `F`, `M`, `N`, `Q`, `S`, `V`), com **CNN treinada do zero**, **Transfer Learning (ResNet18)**, **explicabilidade visual (Grad-CAM)**, **auditoria de ética e fairness (Ir Além 1)** e **integração com aplicativo mobile em React Native + backend Flask (Ir Além 2)**.
+
+### 7.1. Parte 1 – Pré-processamento e Organização das Imagens de ECG
+* **Auditoria do Dataset (`Fase1/assets/images/ECG_Image_data/`):** 420 imagens `RGBA` (`432×288`), zero duplicatas MD5 e zero sobreposição entre treino e teste.
+* **Descoberta Crítica (Viés Cromático):** no dataset bruto, cada classe possui uma cor fixa exclusiva (`F`=Azul, `M`=Preto, `N`=Ciano, `Q`=Amarelo, `S`=Vermelho, `V`=Verde), o que preserva luminâncias distintas mesmo em *grayscale* simples (`0,0` a `169,2`).
+* **Pipeline Agnóstico à Cor (`Fase4/src/preprocessamento.py`):** composição `RGBA → RGB` sobre fundo branco, **binarização invariante à cor** (distância cromática máxima ao fundo + dilatação de 1 px), **recorte de ROI** (`-37,9%` de margens vazias preservando a escala temporal do QRS), redimensionamento (`128×128` para CNN do zero; `224×224` para ResNet18), normalização e *Data Augmentation* clinicamente seguro (**sem *flips* verticais/horizontais**, que inverteriam a polaridade do segmento ST e a sequência P-QRS-T).
+* **Particionamento Estratificado sem Vazamento:** **Treino (`240` — 40/classe)**, **Validação (`60` — 10/classe)** e **Teste Independente (`120` — 20/classe)**.
+* **Entregáveis:**
+  * Notebook Google Colab / Jupyter: [`Fase4/notebooks/01_preprocessamento_ecg.ipynb`](Fase4/notebooks/01_preprocessamento_ecg.ipynb)
+  * Relatório Técnico (1–2 páginas): [`Fase4/relatorios/Relatorio_Parte1_Preprocessamento.md`](Fase4/relatorios/Relatorio_Parte1_Preprocessamento.md)
+
+![Etapas do Pipeline de Pré-processamento](Fase4/assets/02_pipeline_preprocessamento_etapas.png)
+
+### 7.2. Parte 2 – Classificação de Imagens Médicas com CNN do Zero vs. Transfer Learning (ResNet18)
+Avaliação rigorosa no conjunto de teste independente (`n = 120`, 100% binarizado e livre de atalho cromático):
+
+| Abordagem / Arquitetura | Parâmetros | Validação (Acc / F1) | Teste Acurácia | Teste Precisão | Teste Recall | Teste F1-Macro |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **CardioCNN (Treinada do Zero)** | 455.270 | 81,67% / 81,52% | **68,33%** | 67,75% | 68,33% | **65,89%** |
+| **ResNet18 (Transfer Learning — ImageNet)** | 11.242.950 | **85,00% / 84,83%** | **78,33%** | **77,07%** | **78,33%** | **77,23%** |
+
+* **Ganho do Transfer Learning:** **+10,00 pp de acurácia** e **+11,34 pp de F1-Macro** sobre a CNN do zero com apenas 40 imagens/classe no treino, alcançando **100% de Recall em `Q`**, **95% em `V` (Extrassístole Ventricular)** e **85% em `F` e `S`**.
+* **Explicabilidade Visual (Grad-CAM):** mapas de ativação sobre `ResNet18.layer4[-1]` destacando o foco convolucional nos complexos QRS e ondas P/T.
+* **Protótipo Web Interativo em Flask (`Fase4/backend/app.py`):** interface moderna para upload de ECG, escolha entre `ResNet18` e `CardioCNN`, visualização das probabilidades das 6 classes, mapa Grad-CAM, recomendação clínica simulada e histórico em SQLite.
+* **Entregáveis:**
+  * Notebook Python com CNN, métricas, Grad-CAM e protótipo: [`Fase4/notebooks/02_classificacao_cnn_transfer_learning.ipynb`](Fase4/notebooks/02_classificacao_cnn_transfer_learning.ipynb)
+  * Relatório Técnico e prints de métricas: [`Fase4/relatorios/Relatorio_Parte2_CNN_e_Transfer_Learning.md`](Fase4/relatorios/Relatorio_Parte2_CNN_e_Transfer_Learning.md)
+
+![Matrizes de Confusão Comparativas](Fase4/assets/05_matrizes_confusao_comparativo.png)
+
+### 7.3. Ir Além 1 – Ética, Vieses e Governança em Visão Computacional
+* **Experimento 1 (Efeito *Clever Hans* / Teste Contrafactual *Color Swap*):** ao trocar a cor das linhas no teste (ex.: Infarto pintado de ciano), a **CNN Ingênua (RGB)** colapsou de **100,0% → 0,0% (`-100 pp`)** e a **CNN Grayscale Simples** despencou de **88,3% → 15,8% (`-72,5 pp`)**, enquanto nossos modelos com binarização *Color-Invariant* mantiveram **0,0 pp de queda** (`78,3% → 78,3%` na ResNet18).
+* **Experimentos 2 e 3 (Métricas Formais de Fairness e Mitigação):** comparando subgrupos de infraestrutura (**Hospital de Referência** vs. **UBS / Wearable com Ruído**), a calibração de limiar clínico ($\tau = 0{,}30$ para classes críticas `M`, `V`, `F`) elevou a sensibilidade na UBS de **78,3% → 85,0%**, reduziu Falsos Negativos críticos em **30,8%** (`21,7% → 15,0%`), reduziu o *Equal Opportunity Gap* de **0,1000 → 0,0667** e levou o *Disparate Impact Ratio* a **1,0000**.
+* **Entregáveis:**
+  * Relatório Técnico (até 2 páginas): [`Fase4/relatorios/Relatorio_Ir_Alem_1_Etica_e_Governanca.md`](Fase4/relatorios/Relatorio_Ir_Alem_1_Etica_e_Governanca.md)
+  * Notebook de Experimentos de Fairness: [`Fase4/notebooks/03_etica_governanca_fairness.ipynb`](Fase4/notebooks/03_etica_governanca_fairness.ipynb)
+
+![Auditoria de Viés Cromático e Fairness](Fase4/assets/08_fairness_clever_hans_color_swap.png)
+
+### 7.4. Ir Além 2 – Aplicativo Mobile em React Native Integrado ao Backend Flask
+* **App Mobile (`Fase4/mobile/`):** desenvolvido em **React Native (Expo)** com 3 abas (**Analisar ECG**, **Amostras** e **Histórico**), upload pela **Galeria/Câmera** (`expo-image-picker`), envio `multipart/form-data` para `POST /api/v1/predict` do backend Flask, exibição clara da categoria detectada, badge de risco clínico, barras de probabilidade das 6 classes AAMI e mapa **Grad-CAM**.
+* **Entregáveis:**
+  * Código do App + Documentação: [`Fase4/mobile/README.md`](Fase4/mobile/README.md)
+  * Relatório Técnico de Integração Mobile: [`Fase4/relatorios/Relatorio_Ir_Alem_2_App_Mobile.md`](Fase4/relatorios/Relatorio_Ir_Alem_2_App_Mobile.md)
+
+---
+
 ## 🎥 Vídeos de Demonstração (YouTube - Não Listados)
 
 | Fase / Entrega | Link do Vídeo | Descrição |
 | :--- | :--- | :--- |
 | **Fase 2: Diagnóstico Automatizado & Modelos** | [Link no YouTube (Vídeo Não Listado)](https://youtu.be/d6C0rwUkQXQ) | Apresentação em até 4 min dos scripts de extração, treino do modelo de triagem, notebook e discussão de governança. |
 | **Ir Além 1: Portal Web CardioIA (React)** | [Link no YouTube (Vídeo Não Listado)](https://www.youtube.com/watch?v=SEU_LINK_AQUI) | Demonstração do portal: login, proteção de rotas, dashboard, triagem e agendamento com useReducer. |
+| **Fase 4 (Ir Além 2): App Mobile React Native + Flask** | [Link no YouTube (Vídeo Não Listado)](https://youtu.be/_RzOJSBcEBI) | Demonstração (até 3 min) do upload de ECG no app React Native, inferência ResNet18/CardioCNN via Flask, Grad-CAM e histórico SQLite. |
 
 ---
 
-## 📁 7. Estrutura de Pastas Atualizada
+## 📁 8. Estrutura de Pastas Atualizada
 
 ```bash
 CardioIA/
@@ -247,10 +297,75 @@ CardioIA/
 │       ├── Relatorio_Parte1_Edge_Computing.md
 │       ├── Relatorio_Parte2_MQTT_e_Dashboard.md
 │       └── Relatorio_Ir_Alem_1_REST_e_RPA.md
+├── Fase4/                              # Fase 4: Visão Computacional com CNNs, Fairness & Mobile
+│   ├── assets/                         # 9 figuras científicas (pré-processamento, métricas, Grad-CAM, fairness)
+│   ├── data/processed/                 # Manifesto estratificado (CSV), resumo e auditoria de fairness (JSON)
+│   ├── models/                         # Pesos treinados (cnn_scratch_ecg.pt, resnet18_transfer_ecg.pt) e metadados
+│   ├── notebooks/
+│   │   ├── 01_preprocessamento_ecg.ipynb               # Parte 1 (Google Colab / Jupyter)
+│   │   ├── 02_classificacao_cnn_transfer_learning.ipynb # Parte 2 (CNN Zero vs ResNet18 + Grad-CAM)
+│   │   └── 03_etica_governanca_fairness.ipynb          # Ir Além 1 (Experimentos de Fairness)
+│   ├── src/
+│   │   ├── preprocessamento.py         # Pipeline Color-Invariant, ROI crop, normalização e splits
+│   │   ├── modelos.py                  # CardioCNN, ResNet18ECG, GradCAM e CardioPredictor
+│   │   ├── treinar_e_avaliar.py        # Treinamento completo, métricas e geração de gráficos
+│   │   ├── auditoria_fairness.py       # Experimento Clever Hans (Color Swap) + métricas de fairness
+│   │   └── gerar_notebooks.py          # Gerador/executor reproduzível dos 3 notebooks .ipynb
+│   ├── backend/                        # Parte 2 (Protótipo Web Flask) + Ir Além 2 (API REST Mobile)
+│   │   ├── app.py                      # Servidor Flask + CORS + SQLite (/api/v1/predict, /samples, /history)
+│   │   ├── templates/index.html        # Protótipo Web interativo com upload, probabilidades e Grad-CAM
+│   │   └── test_api.py                 # Testes automatizados ponta a ponta da API REST
+│   ├── mobile/                         # Ir Além 2: Aplicativo Mobile em React Native (Expo)
+│   │   ├── App.js                      # Telas de upload (Galeria/Câmera), amostras, resultado Grad-CAM e histórico
+│   │   ├── src/services/api.js         # Integração HTTP multipart/JSON com o backend Flask
+│   │   └── src/components/             # RiskBadge.js e ProbabilityBar.js
+│   └── relatorios/
+│       ├── Relatorio_Parte1_Preprocessamento.md
+│       ├── Relatorio_Parte2_CNN_e_Transfer_Learning.md
+│       ├── Relatorio_Ir_Alem_1_Etica_e_Governanca.md
+│       └── Relatorio_Ir_Alem_2_App_Mobile.md
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
+
+---
+
+## ⚙️ Como Executar os Módulos da Fase 4
+
+### 1. Reexecutar Pré-processamento, Treinamento e Auditoria de Fairness (Opcional — modelos já salvos)
+```bash
+# Instala dependências Python
+pip install -r requirements.txt
+
+# Treina CardioCNN (do zero) + ResNet18 (Transfer Learning) e gera gráficos/pesos
+python Fase4/src/treinar_e_avaliar.py
+
+# Executa a auditoria de viés cromático (Clever Hans) e métricas de Fairness (Ir Além 1)
+python Fase4/src/auditoria_fairness.py
+```
+
+### 2. Protótipo Web Interativo & Backend REST em Flask (Parte 2 e Ir Além 2)
+```bash
+python Fase4/backend/app.py
+# Acesse o protótipo web em: http://127.0.0.1:5000
+# Validação automatizada da API:
+python Fase4/backend/test_api.py
+```
+
+### 3. Aplicativo Mobile em React Native (Ir Além 2)
+```bash
+cd Fase4/mobile
+npm install
+npm start
+# Pressione 'w' (Web), 'a' (Emulador Android) ou escaneie o QR Code no app Expo Go
+```
+
+### 4. Notebooks (Google Colab / Jupyter)
+Abra diretamente no VS Code, JupyterLab ou Google Colab:
+* `Fase4/notebooks/01_preprocessamento_ecg.ipynb`
+* `Fase4/notebooks/02_classificacao_cnn_transfer_learning.ipynb`
+* `Fase4/notebooks/03_etica_governanca_fairness.ipynb`
 
 ---
 
@@ -327,8 +442,12 @@ Acesse em: `http://localhost:5173` (Credenciais: `medico@cardioia.com` / `cardio
   * Protótipo de wearable em ESP32 no Wokwi com DHT22, sensor de pulso cardíaco (botão + gerador automático), acelerômetro MPU6050, triagem clínica embarcada e resiliência offline priorizada em SPIFFS/RAM (Parte 1).
   * Telemetria em tempo real via MQTT (HiveMQ) e dashboard interativo no Node-RED com validação na camada Fog, gráficos, gauges, LED virtual de alerta e controle remoto (Parte 2).
   * API REST em Python/Flask, cliente HTTP, motor de verificação de risco (instantâneo e em janela deslizante) e automação RPA de envio de e-mail em caso de alerta (Ir Além 1).
-* **0.4.0 - Em breve**
-  * *Fase 4: Coração em Imagens - Visão Computacional com CNNs.*
+* **0.4.0 - 23/11/2026**
+  * Entrega da **Fase 4 (Assistente Cardiológico Virtual com Visão Computacional)**.
+  * Pipeline de pré-processamento *Color-Invariant* de ECG (remoção de viés cromático, recorte de ROI, normalização e particionamento estratificado 240/60/120) com notebook Google Colab e relatório técnico (Parte 1).
+  * Treinamento e avaliação comparativa de **CardioCNN (do zero — 68,33% Acc / 65,89% F1)** vs. **ResNet18 Transfer Learning (78,33% Acc / 77,23% F1)**, explicabilidade **Grad-CAM** e protótipo web interativo em **Flask** (Parte 2).
+  * Auditoria de ética, *Shortcut Learning* (*Color Swap* provando queda de `-100 pp` na CNN RGB ingênua vs. `0 pp` no pipeline mitigado) e métricas formais de **Fairness** com calibração de limiar clínico ($\tau=0{,}30$) reduzindo em `30,8%` os Falsos Negativos críticos em UBS (Ir Além 1).
+  * Aplicativo mobile em **React Native (Expo)** integrado ao backend **Flask** com upload via galeria/câmera, exibição das 6 categorias AAMI, barras de probabilidade, Grad-CAM e histórico SQLite (Ir Além 2).
 * **0.5.0 - Em breve**
   * *Fase 5: Assistente Cardiológico Virtual com RAG & NLP.*
 

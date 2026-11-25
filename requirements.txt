@@ -1,16 +1,18 @@
-# CardioIA - Dependências Python (Fases 1, 2 e 3)
+# CardioIA - Dependências Python (Fases 1, 2, 3 e 4)
 # Instalação: pip install -r requirements.txt
 
 # Manipulação e análise de dados
 numpy>=1.24.0
 pandas>=2.0.0
+scipy>=1.11.0
 
 # Processamento de Linguagem Natural (NLP) e Machine Learning
 scikit-learn>=1.3.0
 
-# Visão Computacional e Deep Learning (Redes Neurais / Keras / MLP ECG)
+# Visão Computacional e Deep Learning (Fase 2 MLP Keras + Fase 4 CNNs & ResNet18 PyTorch)
+torch>=2.2.0
+torchvision>=0.17.0
 tensorflow>=2.15.0
-opencv-python>=4.8.0
 Pillow>=10.0.0
 
 # Visualização de dados e métricas
@@ -21,7 +23,8 @@ seaborn>=0.12.0
 jupyter>=1.0.0
 ipykernel>=6.25.0
 
-# Fase 3 - IoT na Saúde (MQTT, API REST e Automação RPA)
+# Fases 3 e 4 - IoT na Saúde (MQTT/RPA) e Backend REST Visão Computacional (Flask + Mobile)
 Flask>=3.0.0
+flask-cors>=4.0.0
 requests>=2.31.0
 paho-mqtt>=2.0.0

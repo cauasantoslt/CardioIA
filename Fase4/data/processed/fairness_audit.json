@@ -1,0 +1,155 @@
+{
+  "experimento_1_vies_cromatico_clever_hans": {
+    "CNN_Ingênua_RGB": {
+      "acc_original": 1.0,
+      "acc_color_swap": 0.0,
+      "queda_pp": 100.0
+    },
+    "CNN_Ingênua_Grayscale": {
+      "acc_original": 0.8833,
+      "acc_color_swap": 0.1583,
+      "queda_pp": 72.5
+    },
+    "CardioCNN_Mitigada_Binarizada": {
+      "acc_original": 0.6833,
+      "acc_color_swap": 0.6833,
+      "queda_pp": 0.0
+    },
+    "ResNet18_Mitigada_Binarizada": {
+      "acc_original": 0.7833,
+      "acc_color_swap": 0.7833,
+      "queda_pp": 0.0
+    }
+  },
+  "experimento_2_multiclasse_por_infraestrutura": {
+    "Hospital_Ref": {
+      "accuracy": 0.7833,
+      "f1_macro": 0.7723,
+      "recall_por_classe": {
+        "F": 0.85,
+        "M": 0.7,
+        "N": 0.35,
+        "Q": 1.0,
+        "S": 0.85,
+        "V": 0.95
+      }
+    },
+    "UBS_Ruido": {
+      "accuracy": 0.6833,
+      "f1_macro": 0.6863,
+      "recall_por_classe": {
+        "F": 0.85,
+        "M": 0.4,
+        "N": 0.4,
+        "Q": 0.95,
+        "S": 0.7,
+        "V": 0.8
+      }
+    }
+  },
+  "experimento_2_fairness_triagem_anormal_vs_normal": {
+    "group_privileged": {
+      "Hospital_Ref": {
+        "n": 120,
+        "accuracy": 0.8417,
+        "selection_rate": 0.8917,
+        "tpr": 0.94,
+        "fnr": 0.06,
+        "fpr": 0.65,
+        "tp": 94,
+        "fn": 6,
+        "fp": 13,
+        "tn": 7
+      }
+    },
+    "group_unprivileged": {
+      "UBS_Ruido": {
+        "n": 120,
+        "accuracy": 0.775,
+        "selection_rate": 0.8083,
+        "tpr": 0.85,
+        "fnr": 0.15,
+        "fpr": 0.6,
+        "tp": 85,
+        "fn": 15,
+        "fp": 12,
+        "tn": 8
+      }
+    },
+    "demographic_parity_diff": 0.0834,
+    "disparate_impact_ratio": 0.9065,
+    "equal_opportunity_diff": 0.09,
+    "equalized_odds_gap": 0.09,
+    "fnr_parity_gap": 0.09
+  },
+  "experimento_3_fairness_critico_antes_mitigacao": {
+    "group_privileged": {
+      "Hospital_Ref": {
+        "n": 120,
+        "accuracy": 0.85,
+        "selection_rate": 0.5333,
+        "tpr": 0.8833,
+        "fnr": 0.1167,
+        "fpr": 0.1833,
+        "tp": 53,
+        "fn": 7,
+        "fp": 11,
+        "tn": 49
+      }
+    },
+    "group_unprivileged": {
+      "UBS_Ruido": {
+        "n": 120,
+        "accuracy": 0.8,
+        "selection_rate": 0.4833,
+        "tpr": 0.7833,
+        "fnr": 0.2167,
+        "fpr": 0.1833,
+        "tp": 47,
+        "fn": 13,
+        "fp": 11,
+        "tn": 49
+      }
+    },
+    "demographic_parity_diff": 0.05,
+    "disparate_impact_ratio": 0.9062,
+    "equal_opportunity_diff": 0.1,
+    "equalized_odds_gap": 0.1,
+    "fnr_parity_gap": 0.1
+  },
+  "experimento_3_fairness_critico_depois_mitigacao_tau_030": {
+    "group_privileged": {
+      "Hospital_Ref": {
+        "n": 120,
+        "accuracy": 0.85,
+        "selection_rate": 0.5667,
+        "tpr": 0.9167,
+        "fnr": 0.0833,
+        "fpr": 0.2167,
+        "tp": 55,
+        "fn": 5,
+        "fp": 13,
+        "tn": 47
+      }
+    },
+    "group_unprivileged": {
+      "UBS_Ruido": {
+        "n": 120,
+        "accuracy": 0.7833,
+        "selection_rate": 0.5667,
+        "tpr": 0.85,
+        "fnr": 0.15,
+        "fpr": 0.2833,
+        "tp": 51,
+        "fn": 9,
+        "fp": 17,
+        "tn": 43
+      }
+    },
+    "demographic_parity_diff": 0.0,
+    "disparate_impact_ratio": 1.0,
+    "equal_opportunity_diff": 0.0667,
+    "equalized_odds_gap": 0.0667,
+    "fnr_parity_gap": 0.0667
+  }
+}

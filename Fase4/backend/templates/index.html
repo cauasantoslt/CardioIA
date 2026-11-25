@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CardioIA Vision — Assistente Cardiológico Virtual</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* =====================================================================
+       CardioIA Vision — Design System Hospitalar Clean (Light) + Modo UTI (Dark)
+       ===================================================================== */
+    :root, [data-theme="light"] {
+      --bg-canvas: #f4f7fb;
+      --bg-gradient: radial-gradient(circle at 12% 0%, #e0f2fe 0%, transparent 38%),
+                     radial-gradient(circle at 88% 4%, #ccfbf1 0%, transparent 34%),
+                     #f4f7fb;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --surface-elevated: #ffffff;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-soft: #e0f2fe;
+      --teal: #0d9488;
+      --teal-soft: #ccfbf1;
+      --success: #059669;
+      --success-soft: #ecfdf5;
+      --warn: #d97706;
+      --warn-soft: #fffbeb;
+      --warn-border: #fde68a;
+      --warn-text: #92400e;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 8px 24px -6px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 20px 44px -12px rgba(15, 23, 42, 0.14);
+      --header-bg: rgba(255, 255, 255, 0.88);
+      --ecg-stage-bg: #ffffff;
+      --ecg-grid-minor: rgba(225, 29, 72, 0.09);
+      --ecg-grid-major: rgba(225, 29, 72, 0.20);
+      --track-bg: #e2e8f0;
+    }
+
+    [data-theme="dark"] {
+      --bg-canvas: #070d19;
+      --bg-gradient: radial-gradient(circle at 12% 0%, rgba(14, 165, 233, 0.14) 0%, transparent 40%),
+                     radial-gradient(circle at 90% 6%, rgba(20, 184, 166, 0.11) 0%, transparent 36%),
+                     #070d19;
+      --surface: #0f172a;
+      --surface-soft: #162136;
+      --surface-elevated: #1b2840;
+      --border: #1e2d45;
+      --border-strong: #334866;
+      --text-main: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-hover: #0ea5e9;
+      --primary-soft: rgba(56, 189, 248, 0.14);
+      --teal: #2dd4bf;
+      --teal-soft: rgba(45, 212, 191, 0.14);
+      --success: #34d399;
+      --success-soft: rgba(16, 185, 129, 0.14);
+      --warn: #fbbf24;
+      --warn-soft: rgba(245, 158, 11, 0.12);
+      --warn-border: rgba(245, 158, 11, 0.35);
+      --warn-text: #fde68a;
+      --danger: #f87171;
+      --danger-soft: rgba(239, 68, 68, 0.15);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 12px 28px -8px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+      --header-bg: rgba(10, 18, 34, 0.88);
+      --ecg-stage-bg: #ffffff;
+      --ecg-grid-minor: rgba(225, 29, 72, 0.11);
+      --ecg-grid-major: rgba(225, 29, 72, 0.22);
+      --track-bg: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      transition: background 0.25s ease, color 0.2s ease;
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--header-bg);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      max-width: 1320px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 13px;
+      background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+      display: grid; place-items: center; color: #fff;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.28);
+    }
+    .brand h1 { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand p { font-size: 0.78rem; color: var(--text-muted); }
+
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 13px; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+      background: var(--success-soft); color: var(--success); border: 1px solid rgba(5, 150, 105, 0.25);
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: currentColor;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
+    }
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 7px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 600;
+      background: var(--surface-soft); color: var(--text-secondary);
+      border: 1px solid var(--border); cursor: pointer; transition: all 0.18s;
+    }
+    .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Container & KPI Strip */
+    .container { max-width: 1320px; margin: 22px auto 48px; padding: 0 24px; }
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px;
+    }
+    @media (max-width: 980px) { .kpi-strip { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .kpi-strip { grid-template-columns: 1fr; } }
+    .kpi-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px 16px; box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .kpi-label { font-size: 0.74rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .kpi-value { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-top: 2px; }
+    .kpi-sub { font-size: 0.74rem; color: var(--text-muted); }
+    .kpi-icon {
+      width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+      display: grid; place-items: center; background: var(--primary-soft); color: var(--primary);
+    }
+
+    /* Main 2-column grid */
+    .workspace { display: grid; grid-template-columns: 410px 1fr; gap: 22px; align-items: start; }
+    @media (max-width: 1060px) { .workspace { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 20px; box-shadow: var(--shadow-md);
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      margin-bottom: 14px;
+    }
+    .card-title { font-size: 0.98rem; font-weight: 800; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+    .step-badge {
+      width: 24px; height: 24px; border-radius: 7px; font-size: 0.76rem; font-weight: 800;
+      display: inline-grid; place-items: center; background: var(--primary-soft); color: var(--primary);
+    }
+
+    /* Dropzone + Live Filter Preview */
+    .dropzone {
+      border: 2px dashed var(--border-strong); border-radius: 14px;
+      padding: 22px 16px; text-align: center; cursor: pointer;
+      background: var(--surface-soft); transition: all 0.2s;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--primary); background: var(--primary-soft);
+    }
+    .dropzone-icon {
+      width: 44px; height: 44px; border-radius: 12px; margin: 0 auto 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      display: grid; place-items: center; color: var(--primary);
+    }
+    .dropzone strong { display: block; font-size: 0.9rem; color: var(--text-main); }
+    .dropzone p { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+    .live-preview-box {
+      display: none; margin-top: 14px; padding: 12px; border-radius: 14px;
+      background: var(--surface-soft); border: 1px solid var(--border);
+    }
+    .live-preview-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;
+    }
+    .live-preview-canvas-wrap {
+      background: #fff; border: 1px solid var(--border); border-radius: 10px;
+      padding: 6px; text-align: center; overflow: hidden;
+    }
+    #previewCanvas { max-width: 100%; max-height: 165px; display: block; margin: 0 auto; border-radius: 6px; }
+    .switch-inline {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600;
+      color: var(--text-secondary); cursor: pointer; user-select: none;
+    }
+    .switch-inline input { accent-color: var(--teal); width: 15px; height: 15px; cursor: pointer; }
+
+    /* Controls */
+    .field { margin-top: 14px; }
+    .field-label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
+    .segmented {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+      background: var(--surface-soft); padding: 4px; border-radius: 12px; border: 1px solid var(--border);
+    }
+    .seg-btn {
+      padding: 9px 10px; border-radius: 9px; border: none; background: transparent;
+      color: var(--text-muted); font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s;
+    }
+    .seg-btn.active {
+      background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm);
+    }
+    .text-input {
+      width: 100%; padding: 10px 12px; border-radius: 11px;
+      background: var(--surface-soft); color: var(--text-main);
+      border: 1px solid var(--border); font-size: 0.88rem; font-weight: 500;
+      transition: border-color 0.15s;
+    }
+    .text-input:focus { outline: none; border-color: var(--primary); }
+
+    .btn-primary {
+      margin-top: 16px; width: 100%; padding: 12px 16px; border: none; border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+      color: #fff; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 8px 18px -4px rgba(2, 132, 199, 0.42);
+      transition: transform 0.12s, opacity 0.15s;
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); opacity: 0.96; }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+    /* Samples Grid */
+    .samples-header { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; margin-bottom: 10px; }
+    .samples-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .sample-card {
+      background: var(--surface-soft); border: 1px solid var(--border); border-radius: 12px;
+      padding: 7px; cursor: pointer; transition: all 0.16s; text-align: left;
+    }
+    .sample-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .sample-card.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-soft); }
+    .sample-card img { width: 100%; height: 54px; object-fit: contain; background: #fff; border-radius: 7px; border: 1px solid #e2e8f0; }
+    .sample-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+    .sample-code { font-size: 0.78rem; font-weight: 800; color: var(--text-main); }
+    .sample-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .sample-sub { font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center; padding: 62px 24px; border-radius: 14px;
+      background: var(--surface-soft); border: 1px dashed var(--border-strong);
+    }
+    .empty-state h3 { font-size: 1rem; color: var(--text-main); margin-top: 12px; }
+    .empty-state p { font-size: 0.85rem; color: var(--text-muted); max-width: 440px; margin: 6px auto 0; }
+
+    /* Diagnosis Hero */
+    .diag-hero {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+      padding: 18px 20px; border-radius: 16px;
+      background: var(--surface-soft); border: 1px solid var(--border);
+    }
+    .badge-risk {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 11px; border-radius: 999px; font-size: 0.73rem; font-weight: 800;
+      letter-spacing: 0.05em; color: #fff;
+    }
+    .meta-tag {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 999px; font-size: 0.73rem; font-weight: 600;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .diag-title { font-size: 1.38rem; font-weight: 800; letter-spacing: -0.02em; margin-top: 8px; }
+    .diag-sub { font-size: 0.84rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* SVG Confidence Gauge */
+    .gauge-wrap { display: flex; align-items: center; gap: 12px; }
+    .gauge-svg { width: 76px; height: 76px; transform: rotate(-90deg); }
+    .gauge-track { fill: none; stroke: var(--track-bg); stroke-width: 7; }
+    .gauge-fill { fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 0.55s ease; }
+    .gauge-text { position: relative; }
+    .gauge-num { font-size: 1.45rem; font-weight: 800; color: var(--text-main); line-height: 1.1; }
+    .gauge-lbl { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .fairness-banner {
+      margin-top: 12px; padding: 10px 14px; border-radius: 12px; font-size: 0.82rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+      background: var(--danger-soft); border: 1px solid rgba(220, 38, 38, 0.28); color: var(--danger);
+    }
+    .fairness-banner.ok {
+      background: var(--success-soft); border-color: rgba(5, 150, 105, 0.25); color: var(--success);
+    }
+
+    /* =====================================================================
+       Interactive Grad-CAM + Color-Invariant ECG Inspector
+       ===================================================================== */
+    .inspector-card {
+      margin-top: 16px; border-radius: 16px; border: 1px solid var(--border);
+      background: var(--surface-soft); overflow: hidden;
+    }
+    .inspector-toolbar {
+      padding: 12px 14px; background: var(--surface); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    }
+    .mode-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+    .mode-pill {
+      padding: 6px 11px; border-radius: 9px; font-size: 0.77rem; font-weight: 700;
+      border: 1px solid var(--border); background: var(--surface-soft); color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .mode-pill:hover { border-color: var(--primary); color: var(--primary); }
+    .mode-pill.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    .zoom-controls { display: flex; align-items: center; gap: 5px; }
+    .icon-btn {
+      height: 30px; min-width: 30px; padding: 0 8px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--surface-soft); color: var(--text-secondary);
+      font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .icon-btn.active { background: var(--teal-soft); border-color: var(--teal); color: var(--teal); }
+    .zoom-val { font-size: 0.76rem; font-weight: 700; min-width: 42px; text-align: center; color: var(--text-secondary); }
+
+    /* Viewport Stage */
+    .stage-wrapper {
+      position: relative; height: 330px; overflow: hidden;
+      background: var(--ecg-stage-bg); cursor: grab; user-select: none;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .stage-wrapper.dragging { cursor: grabbing; }
+    .stage-wrapper.ecg-grid {
+      background-color: #fffdfd;
+      background-image:
+        linear-gradient(to right, var(--ecg-grid-major) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ecg-grid-major) 1px, transparent 1px),
+        linear-gradient(to right, var(--ecg-grid-minor) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--ecg-grid-minor) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    }
+    .stage-canvas {
+      position: relative; width: 310px; height: 310px;
+      transform-origin: center center; transition: transform 0.08s ease-out;
+    }
+    .stage-layer {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: contain; pointer-events: none;
+    }
+    .stage-layer.multiply { mix-blend-mode: multiply; }
+
+    /* Split Before/After Overlay */
+    .split-clip {
+      position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+    }
+    .split-handle {
+      position: absolute; top: 0; bottom: 0; width: 2px; background: var(--primary);
+      z-index: 12; cursor: ew-resize; display: none;
+    }
+    .split-knob {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--primary); color: #fff; font-size: 12px; font-weight: 800;
+      display: grid; place-items: center; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
+    }
+    .split-tag {
+      position: absolute; top: 10px; padding: 3px 8px; border-radius: 6px;
+      font-size: 0.7rem; font-weight: 700; background: rgba(15, 23, 42, 0.78); color: #fff;
+      z-index: 10; pointer-events: none; display: none;
+    }
+    .split-tag.left { left: 10px; }
+    .split-tag.right { right: 10px; }
+
+    /* Inspector Footer: Opacity Slider + Color-Invariant Audit */
+    .inspector-footer {
+      padding: 13px 16px; background: var(--surface); border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr auto; gap: 14px; align-items: center;
+    }
+    @media (max-width: 720px) { .inspector-footer { grid-template-columns: 1fr; } }
+    .slider-group { display: flex; flex-direction: column; gap: 6px; }
+    .slider-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; font-weight: 700; color: var(--text-secondary); }
+    input[type="range"] {
+      width: 100%; accent-color: var(--primary); cursor: pointer; height: 6px;
+    }
+    .heat-legend {
+      display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: var(--text-muted);
+    }
+    .heat-bar {
+      flex: 1; height: 7px; border-radius: 999px;
+      background: linear-gradient(90deg, #30123b, #4145ab, #2ab07f, #f9e721, #f66d1b, #7a0403);
+    }
+    .color-audit-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 11px; font-size: 0.76rem;
+      background: var(--surface-soft); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+    .swatch {
+      width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.2); flex-shrink: 0;
+    }
+
+    /* Probabilities + Clinical Recommendation */
+    .sub-grid { margin-top: 18px; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; }
+    @media (max-width: 780px) { .sub-grid { grid-template-columns: 1fr; } }
+    .panel-soft {
+      background: var(--surface-soft); border: 1px solid var(--border); border-radius: 14px; padding: 15px;
+    }
+    .panel-soft h3 { font-size: 0.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 12px; }
+
+    .prob-list { display: flex; flex-direction: column; gap: 10px; }
+    .prob-top { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px; }
+    .prob-name { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--text-secondary); }
+    .prob-code {
+      display: inline-grid; place-items: center; width: 22px; height: 20px; border-radius: 6px;
+      background: var(--surface); border: 1px solid var(--border); font-weight: 800; font-size: 0.74rem; color: var(--text-main);
+    }
+    .prob-track { height: 8px; border-radius: 999px; background: var(--track-bg); overflow: hidden; }
+    .prob-fill { height: 100%; border-radius: 999px; transition: width 0.45s cubic-bezier(.22,.61,.36,1); }
+
+    .clinical-text { font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; }
+    .clinical-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .disclaimer {
+      margin-top: 14px; padding: 10px 13px; border-radius: 11px;
+      background: var(--warn-soft); border: 1px solid var(--warn-border);
+      color: var(--warn-text); font-size: 0.76rem; line-height: 1.45;
+    }
+
+    /* History Table */
+    .history-card { margin-top: 22px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-weight: 700; }
+    .chip-mini {
+      display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 700;
+      background: var(--surface-soft); border: 1px solid var(--border); color: var(--text-secondary);
+    }
+
+    /* Fullscreen Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
+      background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(6px); padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      width: min(760px, 96vw); background: var(--surface); border-radius: 18px;
+      border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-lg);
+    }
+    .modal-stage { height: 480px; background: #fff; position: relative; display: grid; place-items: center; }
+    .modal-stage img { position: absolute; max-width: 92%; max-height: 92%; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="2 13 6 13 8.5 6 12 18 15 10 17.5 13 22 13"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h1>CardioIA Vision</h1>
+          <p>Fase 4 · Assistente Cardiológico com CNN, Transfer Learning (ResNet18) &amp; Grad-CAM</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="status-pill" id="apiStatus">
+          <span class="status-dot"></span>
+          <span>Conectando à API...</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" title="Alternar entre Claro Clínico e Modo Escuro UTI">
+          <span id="themeIcon">🌙</span>
+          <span id="themeLabel">Modo UTI</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Faixa de KPIs do Sistema -->
+    <section class="kpi-strip">
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">ResNet18 (Transfer)</div>
+          <div class="kpi-value" id="kpiResNet">—</div>
+          <div class="kpi-sub">Acurácia / F1-Macro (Teste n=120)</div>
+        </div>
+        <div class="kpi-icon">⚡</div>
+      </div>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">CardioCNN (Zero)</div>
+          <div class="kpi-value" id="kpiCnn">—</div>
+          <div class="kpi-sub">Baseline convolucional (455k params)</div>
+        </div>
+        <div class="kpi-icon">🧠</div>
+      </div>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">Filtro Color-Invariant</div>
+          <div class="kpi-value" style="color:var(--teal);">0,0 pp queda</div>
+          <div class="kpi-sub">Imune ao viés cromático (Color Swap)</div>
+        </div>
+        <div class="kpi-icon" style="background:var(--teal-soft); color:var(--teal);">🛡</div>
+      </div>
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-label">Análises no Histórico</div>
+          <div class="kpi-value" id="kpiHistoryCount">0</div>
+          <div class="kpi-sub">Persistência local SQLite · Triagem τ=0,30</div>
+        </div>
+        <div class="kpi-icon">📋</div>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <!-- COLUNA ESQUERDA: Aquisição e Pré-visualização com Filtro ao Vivo -->
+      <aside class="card">
+        <div class="card-header">
+          <h2 class="card-title"><span class="step-badge">1</span> Aquisição de Exame de ECG</h2>
+        </div>
+
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+          </div>
+          <strong>Arraste o exame de ECG ou clique para enviar</strong>
+          <p>PNG / JPG · Remoção automática de viés de cor + Recorte ROI</p>
+          <input type="file" id="fileInput" accept="image/png,image/jpeg" hidden />
+        </div>
+
+        <!-- Pré-visualização com Filtro Color-Invariant em tempo real no Canvas -->
+        <div class="live-preview-box" id="livePreviewBox">
+          <div class="live-preview-top">
+            <span id="previewFilename" style="font-size:0.76rem; font-weight:700; color:var(--text-secondary);">arquivo.png</span>
+            <label class="switch-inline" title="Aplica o filtro Color-Invariant localmente antes da classificação">
+              <input type="checkbox" id="liveColorFilterToggle" checked />
+              <span>Filtro Color-Invariant ao vivo</span>
+            </label>
+          </div>
+          <div class="live-preview-canvas-wrap">
+            <canvas id="previewCanvas" width="320" height="200"></canvas>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Arquitetura de Visão Computacional</span>
+          <div class="segmented" id="modelSegment">
+            <button type="button" class="seg-btn active" data-model="resnet18_transfer">ResNet18 (Transfer)</button>
+            <button type="button" class="seg-btn" data-model="cnn_scratch">CardioCNN (Zero)</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="patientId">Identificador Simulado do Paciente</label>
+          <input class="text-input mono" type="text" id="patientId" value="PAC-0001" />
+        </div>
+
+        <button class="btn-primary" id="btnClassify" type="button" disabled>
+          <span>Classificar Traçado com IA</span>
+        </button>
+
+        <div class="samples-header">
+          <span class="field-label" style="margin:0;">Amostras Reais do Teste (6 Classes AAMI)</span>
+          <span style="font-size:0.72rem; color:var(--text-muted);">1 clique para testar</span>
+        </div>
+        <div class="samples-grid" id="samplesGrid"></div>
+      </aside>
+
+      <!-- COLUNA DIREITA: Diagnóstico + Inspetor Interativo Grad-CAM + Histórico -->
+      <section>
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title"><span class="step-badge">2</span> Estação de Interpretação Clínica &amp; Grad-CAM</h2>
+            <span id="inferenceMeta" class="mono" style="font-size:0.75rem; color:var(--text-muted);"></span>
+          </div>
+
+          <div id="emptyState" class="empty-state">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2 12 6 12 9 4 13 20 16 10 18 12 22 12"></polyline>
+            </svg>
+            <h3>Pronto para analisar exames de Eletrocardiograma</h3>
+            <p>Envie uma imagem de ECG ao lado ou clique em uma das 6 classes reais do conjunto de teste para inspecionar o filtro <strong>Color-Invariant</strong>, o mapa de calor <strong>Grad-CAM interativo</strong> e a distribuição de probabilidades.</p>
+          </div>
+
+          <div id="resultPanel" style="display:none;">
+            <!-- Hero do Diagnóstico -->
+            <div class="diag-hero">
+              <div style="flex:1; min-width:240px;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span class="badge-risk" id="resRiskBadge">RISCO</span>
+                  <span class="meta-tag" id="resModelTag">ResNet18</span>
+                  <span class="meta-tag" id="resGtTag" style="display:none;"></span>
+                </div>
+                <div class="diag-title" id="resClassTitle">—</div>
+                <div class="diag-sub" id="resClassEn">—</div>
+              </div>
+              <div class="gauge-wrap">
+                <svg class="gauge-svg" viewBox="0 0 84 84">
+                  <circle class="gauge-track" cx="42" cy="42" r="34"></circle>
+                  <circle class="gauge-fill" id="gaugeCircle" cx="42" cy="42" r="34" stroke="#0284c7" stroke-dasharray="213.6" stroke-dashoffset="213.6"></circle>
+                </svg>
+                <div class="gauge-text">
+                  <div class="gauge-lbl">Confiança</div>
+                  <div class="gauge-num mono" id="resConfPct">0.0%</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Banner de Regra Clínica de Fairness (Ir Além 1: tau = 0.30) -->
+            <div class="fairness-banner" id="fairnessBanner" style="display:none;"></div>
+
+            <!-- PAINEL INTERATIVO DE GRAD-CAM + FILTRO COLOR-INVARIANT AO VIVO -->
+            <div class="inspector-card">
+              <div class="inspector-toolbar">
+                <div class="mode-pills" id="viewModePills">
+                  <button type="button" class="mode-pill active" data-mode="gradcam">🔥 Grad-CAM</button>
+                  <button type="button" class="mode-pill" data-mode="binarizado">🛡 Color-Invariant</button>
+                  <button type="button" class="mode-pill" data-mode="original">🎨 Original RGB</button>
+                  <button type="button" class="mode-pill" data-mode="split">◧ Split Antes/Depois</button>
+                </div>
+
+                <div class="zoom-controls">
+                  <button type="button" class="icon-btn active" id="btnGridToggle" title="Alternar papel milimetrado de ECG">Grade ECG</button>
+                  <button type="button" class="icon-btn" id="btnZoomOut" title="Diminuir zoom">−</button>
+                  <span class="zoom-val mono" id="zoomLabel">100%</span>
+                  <button type="button" class="icon-btn" id="btnZoomIn" title="Aumentar zoom">+</button>
+                  <button type="button" class="icon-btn" id="btnZoomReset" title="Resetar zoom e posição">Reset</button>
+                  <button type="button" class="icon-btn" id="btnFullscreen" title="Expandir em tela cheia">⛶</button>
+                </div>
+              </div>
+
+              <div class="stage-wrapper ecg-grid" id="stageWrapper">
+                <span class="split-tag left" id="splitTagLeft">Original RGB (Com Cor)</span>
+                <span class="split-tag right" id="splitTagRight">Color-Invariant + Grad-CAM</span>
+
+                <div class="stage-canvas" id="stageCanvas">
+                  <!-- Camada Base (Binarizada ou Original) -->
+                  <img id="imgBase" class="stage-layer multiply" alt="ECG Base" />
+                  <!-- Camada Heatmap RGBA (Opacidade controlada pelo slider em tempo real) -->
+                  <img id="imgHeatmap" class="stage-layer" alt="Mapa de Calor Grad-CAM" />
+                  <!-- Camada Split (Original RGB recortado à esquerda da linha divisória) -->
+                  <div class="split-clip" id="splitClip" style="width:50%; display:none;">
+                    <img id="imgSplitOrig" class="stage-layer multiply" alt="Original Split" />
+                  </div>
+                </div>
+
+                <div class="split-handle" id="splitHandle" style="left:50%;">
+                  <div class="split-knob">⇆</div>
+                </div>
+              </div>
+
+              <div class="inspector-footer">
+                <div class="slider-group">
+                  <div class="slider-row">
+                    <span>Opacidade do Mapa de Calor Grad-CAM</span>
+                    <span class="mono" id="opacityVal" style="color:var(--primary);">70%</span>
+                  </div>
+                  <input type="range" id="opacitySlider" min="0" max="100" value="70" />
+                  <div class="heat-legend">
+                    <span>Baixa ativação</span>
+                    <div class="heat-bar"></div>
+                    <span>Alta atenção morfológica (QRS/ST)</span>
+                  </div>
+                </div>
+
+                <div class="color-audit-pill" id="colorAuditPill">
+                  <span class="swatch" id="auditSwatch"></span>
+                  <div>
+                    <strong style="display:block; font-size:0.74rem; color:var(--text-main);">Viés Cromático Neutralizado</strong>
+                    <span id="auditText" class="mono" style="font-size:0.7rem;">—</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Probabilidades & Conduta Clínica -->
+            <div class="sub-grid">
+              <div class="panel-soft">
+                <h3>Distribuição de Probabilidades (6 Classes AAMI)</h3>
+                <div class="prob-list" id="probList"></div>
+              </div>
+              <div class="panel-soft">
+                <h3>Morfologia &amp; Conduta Simulada</h3>
+                <p class="clinical-text"><strong>Padrão Morfológico:</strong> <span id="resMorphology">—</span></p>
+                <div class="clinical-divider"></div>
+                <p class="clinical-text"><strong>Recomendação de Triagem:</strong> <span id="resRecommendation">—</span></p>
+                <div class="disclaimer" id="resDisclaimer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Histórico SQLite -->
+        <div class="card history-card">
+          <div class="card-header">
+            <h2 class="card-title"><span class="step-badge">3</span> Histórico Recente de Análises (SQLite)</h2>
+            <button type="button" class="icon-btn" id="btnRefreshHistory">↻ Atualizar</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>ID</th><th>Paciente</th><th>Modelo</th><th>Categoria AAMI</th><th>Risco</th><th>Confiança</th><th>Latência</th></tr>
+              </thead>
+              <tbody id="historyBody">
+                <tr><td colspan="7" style="color:var(--text-muted);">Nenhuma análise registrada ainda.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal Fullscreen do Inspetor -->
+  <div class="modal-backdrop" id="fullscreenModal">
+    <div class="modal-box">
+      <div class="inspector-toolbar">
+        <strong style="font-size:0.9rem;">Visualização Ampliada — Grad-CAM &amp; ECG</strong>
+        <button type="button" class="icon-btn" id="btnCloseModal">✕ Fechar</button>
+      </div>
+      <div class="modal-stage ecg-grid">
+        <img id="modalBaseImg" class="multiply" alt="Base Ampliada" />
+        <img id="modalHeatImg" alt="Grad-CAM Ampliado" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // -------------------------------------------------------------------
+    // Estado Global da Interface
+    // -------------------------------------------------------------------
+    let selectedFile = null;
+    let selectedImageObj = null;
+    let selectedModel = 'resnet18_transfer';
+    let lastResult = null;
+
+    // Estado do Inspetor Grad-CAM Interativo
+    let viewMode = 'gradcam'; // 'gradcam' | 'binarizado' | 'original' | 'split'
+    let camOpacity = 0.70;
+    let zoomLevel = 1.0;
+    let panX = 0, panY = 0;
+    let splitPct = 50;
+
+    // -------------------------------------------------------------------
+    // Tema Claro Clínico <-> Modo Escuro UTI
+    // -------------------------------------------------------------------
+    const htmlEl = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeLabel = document.getElementById('themeLabel');
+
+    function applyTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      localStorage.setItem('cardioia_theme', theme);
+      if (theme === 'dark') {
+        themeIcon.textContent = '☀️';
+        themeLabel.textContent = 'Claro Clínico';
+      } else {
+        themeIcon.textContent = '🌙';
+        themeLabel.textContent = 'Modo UTI';
+      }
+    }
+    applyTheme(localStorage.getItem('cardioia_theme') || 'light');
+    themeToggle.addEventListener('click', () => {
+      applyTheme(htmlEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+
+    // -------------------------------------------------------------------
+    // Filtro Color-Invariant ao Vivo no Canvas (Preview antes da inferência)
+    // -------------------------------------------------------------------
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const livePreviewBox = document.getElementById('livePreviewBox');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const previewCtx = previewCanvas.getContext('2d');
+    const liveColorFilterToggle = document.getElementById('liveColorFilterToggle');
+    const btnClassify = document.getElementById('btnClassify');
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) handleSelectedFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) handleSelectedFile(e.target.files[0]);
+    });
+    liveColorFilterToggle.addEventListener('change', renderLivePreviewCanvas);
+
+    function handleSelectedFile(file) {
+      selectedFile = file;
+      document.getElementById('previewFilename').textContent = file.name;
+      const img = new Image();
+      img.onload = () => {
+        selectedImageObj = img;
+        livePreviewBox.style.display = 'block';
+        renderLivePreviewCanvas();
+        btnClassify.disabled = false;
+      };
+      img.src = URL.createObjectURL(file);
+    }
+
+    function renderLivePreviewCanvas() {
+      if (!selectedImageObj) return;
+      const w = 320, h = 200;
+      previewCanvas.width = w;
+      previewCanvas.height = h;
+      previewCtx.fillStyle = '#ffffff';
+      previewCtx.fillRect(0, 0, w, h);
+
+      // Mantém proporção centralizada
+      const scale = Math.min(w / selectedImageObj.width, h / selectedImageObj.height);
+      const dw = selectedImageObj.width * scale;
+      const dh = selectedImageObj.height * scale;
+      previewCtx.drawImage(selectedImageObj, (w - dw) / 2, (h - dh) / 2, dw, dh);
+
+      if (liveColorFilterToggle.checked) {
+        // Mesma lógica Color-Invariant do Python: max_c(255 - I_c) -> binarização pura
+        const imgData = previewCtx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const dist = Math.max(255 - d[i], 255 - d[i + 1], 255 - d[i + 2]);
+          const val = dist > 35 ? 15 : 255;
+          d[i] = d[i + 1] = d[i + 2] = val;
+          d[i + 3] = 255;
+        }
+        previewCtx.putImageData(imgData, 0, 0);
+      }
+    }
+
+    // Seletor de Modelo
+    document.querySelectorAll('#modelSegment .seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#modelSegment .seg-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedModel = btn.dataset.model;
+      });
+    });
+
+    // -------------------------------------------------------------------
+    // Carregamento Inicial da API Flask (Health, Samples, History)
+    // -------------------------------------------------------------------
+    async function loadInitial() {
+      try {
+        const h = await fetch('/api/v1/health').then(r => r.json());
+        document.getElementById('apiStatus').innerHTML = `<span class="status-dot"></span><span>API Online · ${h.available_models.length} modelos</span>`;
+        const mRes = h.models_summary?.resnet18_transfer;
+        const mCnn = h.models_summary?.cnn_scratch;
+        if (mRes) document.getElementById('kpiResNet').textContent = `${(mRes.accuracy * 100).toFixed(1)}% / ${(mRes.f1_macro * 100).toFixed(1)}%`;
+        if (mCnn) document.getElementById('kpiCnn').textContent = `${(mCnn.accuracy * 100).toFixed(1)}% / ${(mCnn.f1_macro * 100).toFixed(1)}%`;
+
+        const s = await fetch('/api/v1/samples').then(r => r.json());
+        const seen = new Set();
+        const six = (s.samples || []).filter(item => {
+          if (seen.has(item.true_class)) return false;
+          seen.add(item.true_class);
+          return true;
+        });
+
+        const grid = document.getElementById('samplesGrid');
+        grid.innerHTML = six.map(item => `
+          <div class="sample-card" data-id="${item.sample_id}" title="${item.label_display}">
+            <img src="${item.thumbnail_b64}" alt="Classe ${item.true_class}" />
+            <div class="sample-meta">
+              <span class="sample-code">Classe ${item.true_class}</span>
+              <span class="sample-dot" style="background:${item.risk_color};"></span>
+            </div>
+            <div class="sample-sub">${item.cor_original || item.risk_level}</div>
+          </div>
+        `).join('');
+
+        grid.querySelectorAll('.sample-card').forEach(card => {
+          card.addEventListener('click', () => {
+            grid.querySelectorAll('.sample-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            classifySample(card.dataset.id);
+          });
+        });
+
+        await loadHistory();
+      } catch (err) {
+        document.getElementById('apiStatus').innerHTML = `<span>● API Offline</span>`;
+      }
+    }
+
+    btnClassify.addEventListener('click', async () => {
+      if (!selectedFile) return;
+      btnClassify.disabled = true;
+      btnClassify.innerHTML = '<span>Executando CNN + Grad-CAM...</span>';
+      try {
+        const fd = new FormData();
+        fd.append('image', selectedFile);
+        fd.append('model', selectedModel);
+        fd.append('patient_id', document.getElementById('patientId').value);
+        fd.append('source', 'web_flask_v2');
+        const res = await fetch('/api/v1/predict', { method: 'POST', body: fd });
+        const data = await res.json();
+        renderDiagnosis(data);
+        loadHistory();
+      } finally {
+        btnClassify.disabled = false;
+        btnClassify.innerHTML = '<span>Classificar Traçado com IA</span>';
+      }
+    });
+
+    async function classifySample(sampleId) {
+      document.getElementById('inferenceMeta').textContent = 'Processando inferência...';
+      const res = await fetch('/api/v1/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sample_id: sampleId,
+          model: selectedModel,
+          patient_id: document.getElementById('patientId').value,
+          source: 'web_sample_v2',
+          gradcam: true,
+        }),
+      });
+      const data = await res.json();
+      renderDiagnosis(data);
+      loadHistory();
+    }
+
+    // -------------------------------------------------------------------
+    // Renderização do Diagnóstico e Inspetor Interativo Grad-CAM
+    // -------------------------------------------------------------------
+    function renderDiagnosis(d) {
+      if (d.erro) { alert(d.erro); return; }
+      lastResult = d;
+
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('resultPanel').style.display = 'block';
+
+      const riskBadge = document.getElementById('resRiskBadge');
+      riskBadge.textContent = `RISCO ${d.risk_level}`;
+      riskBadge.style.background = d.risk_color;
+
+      document.getElementById('resModelTag').textContent = d.model_label;
+      document.getElementById('inferenceMeta').textContent = `#${d.analysis_id} · ${d.inference_time_ms} ms`;
+
+      const gtTag = document.getElementById('resGtTag');
+      if (d.ground_truth_class) {
+        gtTag.style.display = 'inline-flex';
+        gtTag.textContent = `Ref. Teste: ${d.ground_truth_class} ${d.match_ground_truth ? '✓ Correto' : '✗ Divergente'}`;
+        gtTag.style.color = d.match_ground_truth ? 'var(--success)' : 'var(--danger)';
+      } else {
+        gtTag.style.display = 'none';
+      }
+
+      document.getElementById('resClassTitle').textContent = `Classe ${d.predicted_class} — ${d.class_name_pt}`;
+      document.getElementById('resClassEn').textContent = `${d.class_name_en} · Paciente: ${d.patient_id}`;
+
+      // Anel SVG de Confiança
+      const pct = Number(d.confidence_pct || 0);
+      document.getElementById('resConfPct').textContent = `${pct.toFixed(1)}%`;
+      const circle = document.getElementById('gaugeCircle');
+      const circumference = 2 * Math.PI * 34;
+      circle.style.strokeDasharray = circumference;
+      circle.style.strokeDashoffset = circumference * (1 - pct / 100);
+      circle.style.stroke = d.risk_color;
+
+      // Banner Fairness (Ir Além 1: tau = 0.30 para classes M, V, F)
+      const fb = document.getElementById('fairnessBanner');
+      if (d.fairness_triage) {
+        fb.style.display = 'flex';
+        const trig = d.fairness_triage.critical_alert_triggered;
+        fb.className = trig ? 'fairness-banner' : 'fairness-banner ok';
+        fb.innerHTML = trig
+          ? `<strong>⚠ Protocolo Fairness (τ = 0,30) Acionado:</strong> Probabilidade acumulada crítica P(M+V+F) = <span class="mono">${d.fairness_triage.critical_prob_pct.toFixed(1)}%</span> → Priorizar revisão cardiológica.`
+          : `<strong>✓ Protocolo Fairness (τ = 0,30):</strong> Probabilidade acumulada crítica P(M+V+F) = <span class="mono">${d.fairness_triage.critical_prob_pct.toFixed(1)}%</span> (abaixo do limiar de alerta prioritário).`;
+      }
+
+      // Auditoria Cromática ao Vivo
+      if (d.chromatic_audit) {
+        document.getElementById('auditSwatch').style.background = d.chromatic_audit.hex_color;
+        document.getElementById('auditText').textContent =
+          `Original ${d.chromatic_audit.hex_color} (Lum ${d.chromatic_audit.median_luminance}) → Binarizado`;
+      }
+
+      // Atualiza imagens do Inspetor Grad-CAM
+      document.getElementById('imgSplitOrig').src = d.original_roi_image_b64 || d.preprocessed_image_b64;
+      document.getElementById('imgHeatmap').src = d.gradcam_heatmap_b64 || '';
+      resetZoom();
+      updateInspectorView();
+
+      // Barras de probabilidade das 6 classes
+      document.getElementById('probList').innerHTML = (d.probabilities || []).map(p => `
+        <div>
+          <div class="prob-top">
+            <span class="prob-name">
+              <span class="prob-code">${p.code}</span>
+              <span>${p.name_pt}</span>
+            </span>
+            <span class="mono" style="font-weight:700; color:${p.code === d.predicted_class ? 'var(--primary)' : 'var(--text-main)'};">
+              ${p.probability_pct.toFixed(1)}%
+            </span>
+          </div>
+          <div class="prob-track">
+            <div class="prob-fill" style="width:${p.probability_pct}%; background:${p.risk_color};"></div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('resMorphology').textContent = d.morphology;
+      document.getElementById('resRecommendation').textContent = d.recommendation;
+      document.getElementById('resDisclaimer').textContent = d.clinical_disclaimer;
+    }
+
+    // -------------------------------------------------------------------
+    // Controles do Inspetor Grad-CAM (Modo, Opacidade, Zoom, Pan, Split, Fullscreen)
+    // -------------------------------------------------------------------
+    const stageWrapper = document.getElementById('stageWrapper');
+    const stageCanvas = document.getElementById('stageCanvas');
+    const imgBase = document.getElementById('imgBase');
+    const imgHeatmap = document.getElementById('imgHeatmap');
+    const splitClip = document.getElementById('splitClip');
+    const splitHandle = document.getElementById('splitHandle');
+    const splitTagLeft = document.getElementById('splitTagLeft');
+    const splitTagRight = document.getElementById('splitTagRight');
+    const opacitySlider = document.getElementById('opacitySlider');
+    const opacityVal = document.getElementById('opacityVal');
+
+    function updateInspectorView() {
+      if (!lastResult) return;
+      const showSplit = viewMode === 'split';
+      splitClip.style.display = showSplit ? 'block' : 'none';
+      splitHandle.style.display = showSplit ? 'block' : 'none';
+      splitTagLeft.style.display = showSplit ? 'block' : 'none';
+      splitTagRight.style.display = showSplit ? 'block' : 'none';
+
+      if (viewMode === 'original') {
+        imgBase.src = lastResult.original_roi_image_b64 || lastResult.preprocessed_image_b64;
+        imgHeatmap.style.opacity = '0';
+        opacitySlider.disabled = true;
+      } else if (viewMode === 'binarizado') {
+        imgBase.src = lastResult.preprocessed_image_b64;
+        imgHeatmap.style.opacity = '0';
+        opacitySlider.disabled = true;
+      } else {
+        // 'gradcam' ou 'split'
+        imgBase.src = lastResult.preprocessed_image_b64;
+        imgHeatmap.style.opacity = String(camOpacity);
+        opacitySlider.disabled = false;
+      }
+      applySplitPosition(splitPct);
+    }
+
+    function applyTransform() {
+      stageCanvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+      document.getElementById('zoomLabel').textContent = `${Math.round(zoomLevel * 100)}%`;
+    }
+
+    function resetZoom() {
+      zoomLevel = 1.0; panX = 0; panY = 0;
+      applyTransform();
+    }
+
+    function applySplitPosition(pct) {
+      splitPct = Math.max(5, Math.min(95, pct));
+      splitClip.style.width = `${splitPct}%`;
+      splitHandle.style.left = `${splitPct}%`;
+    }
+
+    document.querySelectorAll('#viewModePills .mode-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#viewModePills .mode-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        viewMode = btn.dataset.mode;
+        updateInspectorView();
+      });
+    });
+
+    opacitySlider.addEventListener('input', (e) => {
+      camOpacity = Number(e.target.value) / 100;
+      opacityVal.textContent = `${e.target.value}%`;
+      if (viewMode === 'gradcam' || viewMode === 'split') {
+        imgHeatmap.style.opacity = String(camOpacity);
+      }
+    });
+
+    document.getElementById('btnGridToggle').addEventListener('click', (e) => {
+      e.currentTarget.classList.toggle('active');
+      stageWrapper.classList.toggle('ecg-grid');
+    });
+    document.getElementById('btnZoomIn').addEventListener('click', () => {
+      zoomLevel = Math.min(3.0, +(zoomLevel + 0.25).toFixed(2));
+      applyTransform();
+    });
+    document.getElementById('btnZoomOut').addEventListener('click', () => {
+      zoomLevel = Math.max(1.0, +(zoomLevel - 0.25).toFixed(2));
+      if (zoomLevel === 1.0) { panX = 0; panY = 0; }
+      applyTransform();
+    });
+    document.getElementById('btnZoomReset').addEventListener('click', resetZoom);
+
+    // Zoom com roda do mouse no Inspetor
+    stageWrapper.addEventListener('wheel', (e) => {
+      if (!lastResult) return;
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.2 : -0.2;
+      zoomLevel = Math.max(1.0, Math.min(3.0, +(zoomLevel + delta).toFixed(2)));
+      if (zoomLevel === 1.0) { panX = 0; panY = 0; }
+      applyTransform();
+    }, { passive: false });
+
+    // Arraste (Pan ou Split Handle)
+    let isPanning = false, isSlidingSplit = false, startX = 0, startY = 0;
+    splitHandle.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      isSlidingSplit = true;
+      splitHandle.setPointerCapture(e.pointerId);
+    });
+    stageWrapper.addEventListener('pointerdown', (e) => {
+      if (viewMode === 'split' && zoomLevel === 1.0) {
+        const rect = stageWrapper.getBoundingClientRect();
+        applySplitPosition(((e.clientX - rect.left) / rect.width) * 100);
+        isSlidingSplit = true;
+        return;
+      }
+      if (zoomLevel > 1.0) {
+        isPanning = true;
+        stageWrapper.classList.add('dragging');
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+      }
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (isSlidingSplit) {
+        const rect = stageCanvas.getBoundingClientRect();
+        applySplitPosition(((e.clientX - rect.left) / rect.width) * 100);
+      } else if (isPanning) {
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        applyTransform();
+      }
+    });
+    window.addEventListener('pointerup', () => {
+      isPanning = false;
+      isSlidingSplit = false;
+      stageWrapper.classList.remove('dragging');
+    });
+
+    // Modal Fullscreen
+    const fullscreenModal = document.getElementById('fullscreenModal');
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!lastResult) return;
+      document.getElementById('modalBaseImg').src = viewMode === 'original'
+        ? (lastResult.original_roi_image_b64 || lastResult.preprocessed_image_b64)
+        : lastResult.preprocessed_image_b64;
+      const mh = document.getElementById('modalHeatImg');
+      mh.src = lastResult.gradcam_heatmap_b64 || '';
+      mh.style.opacity = (viewMode === 'gradcam' || viewMode === 'split') ? String(camOpacity) : '0';
+      fullscreenModal.classList.add('open');
+    });
+    document.getElementById('btnCloseModal').addEventListener('click', () => fullscreenModal.classList.remove('open'));
+    fullscreenModal.addEventListener('click', (e) => { if (e.target === fullscreenModal) fullscreenModal.classList.remove('open'); });
+
+    // Histórico SQLite
+    async function loadHistory() {
+      const h = await fetch('/api/v1/history?limit=10').then(r => r.json());
+      const rows = h.history || [];
+      document.getElementById('kpiHistoryCount').textContent = String(h.total || rows.length);
+      const body = document.getElementById('historyBody');
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);">Nenhuma análise registrada ainda.</td></tr>';
+        return;
+      }
+      body.innerHTML = rows.map(r => `
+        <tr>
+          <td class="mono">#${r.id}</td>
+          <td class="mono">${r.paciente_id}</td>
+          <td><span class="chip-mini">${r.modelo === 'resnet18_transfer' ? 'ResNet18' : 'CardioCNN'}</span></td>
+          <td><strong>${r.classe_predita}</strong> · ${r.nome_classe}</td>
+          <td><span class="chip-mini">${r.risco}</span></td>
+          <td class="mono" style="font-weight:700;">${Number(r.confianca_pct).toFixed(1)}%</td>
+          <td class="mono" style="color:var(--text-muted);">${Number(r.tempo_ms).toFixed(0)} ms</td>
+        </tr>
+      `).join('');
+    }
+    document.getElementById('btnRefreshHistory').addEventListener('click', loadHistory);
+
+    loadInitial();
+  </script>
+</body>
+</html>

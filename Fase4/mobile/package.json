@@ -1,0 +1,27 @@
+{
+  "name": "cardioia-mobile",
+  "version": "1.0.0",
+  "description": "CardioIA Fase 4 (Ir Além 2) — Aplicativo Mobile em React Native integrado ao backend Flask com CNN/ResNet18 para classificação de ECG.",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "expo": "~52.0.38",
+    "expo-asset": "~11.0.5",
+    "expo-image-picker": "~16.0.6",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.7",
+    "react-native-web": "~0.19.13",
+    "@expo/metro-runtime": "~4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2"
+  },
+  "private": true
+}

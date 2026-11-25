@@ -1,0 +1,96 @@
+{
+  "dataset_source": "ECG Image Data (MIT-BIH Arrhythmia / AAMI Standard — Fase 1 CardioIA)",
+  "total_images": 420,
+  "classes": [
+    "F",
+    "M",
+    "N",
+    "Q",
+    "S",
+    "V"
+  ],
+  "num_classes": 6,
+  "raw_resolution": "432x288",
+  "raw_mode": "RGBA",
+  "roi_box": [
+    52,
+    28,
+    388,
+    258
+  ],
+  "roi_area_reduction_pct": 37.9,
+  "splits": {
+    "train": 240,
+    "val": 60,
+    "test": 120
+  },
+  "integrity": {
+    "unique_hashes": 420,
+    "duplicates_total": 0,
+    "overlap_train_val": 0,
+    "overlap_train_test": 0,
+    "overlap_val_test": 0
+  },
+  "chromatic_bias_audit": {
+    "F": {
+      "count_total": 70,
+      "median_rgb": [
+        0,
+        0,
+        255
+      ],
+      "median_luminance": 29.1,
+      "mean_ink_ratio": 0.02579
+    },
+    "M": {
+      "count_total": 70,
+      "median_rgb": [
+        0,
+        0,
+        0
+      ],
+      "median_luminance": 0.0,
+      "mean_ink_ratio": 0.03263
+    },
+    "N": {
+      "count_total": 70,
+      "median_rgb": [
+        0,
+        191,
+        191
+      ],
+      "median_luminance": 133.9,
+      "mean_ink_ratio": 0.03152
+    },
+    "Q": {
+      "count_total": 70,
+      "median_rgb": [
+        191,
+        191,
+        0
+      ],
+      "median_luminance": 169.2,
+      "mean_ink_ratio": 0.0311
+    },
+    "S": {
+      "count_total": 70,
+      "median_rgb": [
+        255,
+        0,
+        0
+      ],
+      "median_luminance": 76.2,
+      "mean_ink_ratio": 0.03307
+    },
+    "V": {
+      "count_total": 70,
+      "median_rgb": [
+        0,
+        128,
+        0
+      ],
+      "median_luminance": 75.1,
+      "mean_ink_ratio": 0.0262
+    }
+  }
+}

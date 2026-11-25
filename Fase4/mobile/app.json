@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "CardioIA Vision",
+    "slug": "cardioia-vision-fase4",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Permitir seleção de exames de ECG da galeria para classificação via CNN.",
+        "NSCameraUsageDescription": "Permitir captura de foto de exames de ECG para classificação via CNN."
+      }
+    },
+    "android": {
+      "package": "br.com.fiap.cardioia.vision",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES"
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O CardioIA precisa acessar sua galeria para enviar imagens de ECG ao classificador.",
+          "cameraPermission": "O CardioIA precisa acessar a câmera para fotografar traçados de ECG."
+        }
+      ]
+    ]
+  }
+}

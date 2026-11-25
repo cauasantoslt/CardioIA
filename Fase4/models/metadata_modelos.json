@@ -1,0 +1,1076 @@
+{
+  "project": "CardioIA — Fase 4: Visão Computacional com CNNs",
+  "dataset": {
+    "dataset_source": "ECG Image Data (MIT-BIH Arrhythmia / AAMI Standard — Fase 1 CardioIA)",
+    "total_images": 420,
+    "classes": [
+      "F",
+      "M",
+      "N",
+      "Q",
+      "S",
+      "V"
+    ],
+    "num_classes": 6,
+    "raw_resolution": "432x288",
+    "raw_mode": "RGBA",
+    "roi_box": [
+      52,
+      28,
+      388,
+      258
+    ],
+    "roi_area_reduction_pct": 37.9,
+    "splits": {
+      "train": 240,
+      "val": 60,
+      "test": 120
+    },
+    "integrity": {
+      "unique_hashes": 420,
+      "duplicates_total": 0,
+      "overlap_train_val": 0,
+      "overlap_train_test": 0,
+      "overlap_val_test": 0
+    },
+    "chromatic_bias_audit": {
+      "F": {
+        "count_total": 70,
+        "median_rgb": [
+          0,
+          0,
+          255
+        ],
+        "median_luminance": 29.1,
+        "mean_ink_ratio": 0.02579
+      },
+      "M": {
+        "count_total": 70,
+        "median_rgb": [
+          0,
+          0,
+          0
+        ],
+        "median_luminance": 0.0,
+        "mean_ink_ratio": 0.03263
+      },
+      "N": {
+        "count_total": 70,
+        "median_rgb": [
+          0,
+          191,
+          191
+        ],
+        "median_luminance": 133.9,
+        "mean_ink_ratio": 0.03152
+      },
+      "Q": {
+        "count_total": 70,
+        "median_rgb": [
+          191,
+          191,
+          0
+        ],
+        "median_luminance": 169.2,
+        "mean_ink_ratio": 0.0311
+      },
+      "S": {
+        "count_total": 70,
+        "median_rgb": [
+          255,
+          0,
+          0
+        ],
+        "median_luminance": 76.2,
+        "mean_ink_ratio": 0.03307
+      },
+      "V": {
+        "count_total": 70,
+        "median_rgb": [
+          0,
+          128,
+          0
+        ],
+        "median_luminance": 75.1,
+        "mean_ink_ratio": 0.0262
+      }
+    }
+  },
+  "classes": [
+    "F",
+    "M",
+    "N",
+    "Q",
+    "S",
+    "V"
+  ],
+  "class_info": {
+    "N": {
+      "code": "N",
+      "name_en": "Normal Beat",
+      "name_pt": "Batimento Sinusal Normal",
+      "risk_level": "BAIXO",
+      "risk_color": "#059669",
+      "cor_original_dataset": "Ciano",
+      "morphology": "Complexo QRS estreito, onda P fisiológica precedente e segmento ST isoelétrico.",
+      "recommendation": "Padrão compatível com ritmo sinusal fisiológico. Manter acompanhamento preventivo de rotina e correlacionar com sintomas clínicos e sinais vitais."
+    },
+    "S": {
+      "code": "S",
+      "name_en": "Supraventricular Ectopic Beat",
+      "name_pt": "Extrassístole Supraventricular",
+      "risk_level": "MODERADO",
+      "risk_color": "#D97706",
+      "cor_original_dataset": "Vermelho",
+      "morphology": "Batimento prematuro de origem atrial/juncional com QRS geralmente estreito e onda P alterada.",
+      "recommendation": "Avaliar frequência das ectopias, fatores desencadeantes (estresse, cafeína, distúrbios eletrolíticos) e rastrear risco de taquiarritmias supraventriculares (ex.: Fibrilação Atrial)."
+    },
+    "V": {
+      "code": "V",
+      "name_en": "Ventricular Ectopic Beat",
+      "name_pt": "Extrassístole Ventricular (PVC)",
+      "risk_level": "ALTO",
+      "risk_color": "#EA580C",
+      "cor_original_dataset": "Verde",
+      "morphology": "Complexo QRS alargado (>120 ms) e bizarro, sem onda P precedente, com alteração secundária de ST-T.",
+      "recommendation": "Encaminhar para avaliação cardiológica prioritária (Holter 24h, eletrólitos e ecocardiograma). Monitorar carga arrítmica quanto ao risco de taquicardia ventricular."
+    },
+    "F": {
+      "code": "F",
+      "name_en": "Fusion Beat",
+      "name_pt": "Batimento de Fusão Ventricular",
+      "risk_level": "ALTO",
+      "risk_color": "#EA580C",
+      "cor_original_dataset": "Azul",
+      "morphology": "Morfologia híbrida resultante da ativação simultânea por estímulo supraventricular e foco ventricular.",
+      "recommendation": "Sinal de coexistência de ritmo sinusal e foco ectópico ventricular. Requer revisão por cardiologista e monitoramento contínuo de ECG para descartar arritmia sustentada."
+    },
+    "M": {
+      "code": "M",
+      "name_en": "Myocardial Infarction / Pathological",
+      "name_pt": "Infarto do Miocárdio / Alteração Isquêmica",
+      "risk_level": "CRITICO",
+      "risk_color": "#DC2626",
+      "cor_original_dataset": "Preto",
+      "morphology": "Alteração marcante de repolarização (supradesnivelamento/infradesnivelamento de ST e/ou onda Q patológica).",
+      "recommendation": "ALERTA CLÍNICO PRIORITÁRIO: Padrão sugestivo de isquemia/injúria miocárdica. Acionar protocolo de Síndrome Coronariana Aguda, ECG de 12 derivações imediato e dosagem de troponina."
+    },
+    "Q": {
+      "code": "Q",
+      "name_en": "Unknown / Paced Beat",
+      "name_pt": "Batimento de Marca-passo ou Inclassificável",
+      "risk_level": "MODERADO",
+      "risk_color": "#7C3AED",
+      "cor_original_dataset": "Amarelo",
+      "morphology": "Traçado compatível com estimulação artificial (marca-passo) ou morfologia atípica/ruído acentuado.",
+      "recommendation": "Confirmar histórico de dispositivo cardíaco implantável (marca-passo/CDI) ou repetir aquisição do exame verificando contato dos eletrodos e interferência de linha de base."
+    }
+  },
+  "models": {
+    "cnn_scratch": {
+      "name": "CardioCNN (Treinada do Zero)",
+      "input_shape": [
+        1,
+        128,
+        128
+      ],
+      "num_params": 455270,
+      "epochs": 45,
+      "best_epoch": 31,
+      "train_time_sec": 453.0,
+      "history": {
+        "train_loss": [
+          2.0762,
+          1.8363,
+          1.8123,
+          1.7616,
+          1.738,
+          1.6945,
+          1.6554,
+          1.5518,
+          1.4428,
+          1.3683,
+          1.3237,
+          1.2525,
+          1.1788,
+          1.0951,
+          1.0907,
+          1.0746,
+          1.0513,
+          0.9613,
+          1.0025,
+          0.9366,
+          0.9432,
+          0.9117,
+          0.8418,
+          0.7838,
+          0.7762,
+          0.772,
+          0.7432,
+          0.6593,
+          0.6879,
+          0.6648,
+          0.6396,
+          0.6448,
+          0.6062,
+          0.6416,
+          0.6019,
+          0.6374,
+          0.552,
+          0.5863,
+          0.6179,
+          0.5682,
+          0.5363,
+          0.589,
+          0.5341,
+          0.5324,
+          0.5392
+        ],
+        "val_loss": [
+          1.8014,
+          1.7856,
+          1.7688,
+          1.7362,
+          1.7055,
+          1.6504,
+          1.561,
+          1.4482,
+          1.5954,
+          1.3216,
+          1.1703,
+          1.4896,
+          0.924,
+          1.5016,
+          0.917,
+          0.9011,
+          0.9637,
+          0.8596,
+          0.8129,
+          0.7288,
+          0.8043,
+          0.6612,
+          0.6147,
+          0.6122,
+          0.6191,
+          0.6828,
+          0.6739,
+          0.6085,
+          0.6179,
+          0.5503,
+          0.5451,
+          0.5679,
+          0.5904,
+          0.563,
+          0.5698,
+          0.5513,
+          0.5293,
+          0.5083,
+          0.4918,
+          0.4963,
+          0.5025,
+          0.4974,
+          0.5033,
+          0.5077,
+          0.5047
+        ],
+        "train_acc": [
+          0.1292,
+          0.1667,
+          0.1542,
+          0.1875,
+          0.2708,
+          0.3042,
+          0.3292,
+          0.4083,
+          0.375,
+          0.4208,
+          0.475,
+          0.5292,
+          0.5625,
+          0.6417,
+          0.6292,
+          0.6083,
+          0.6125,
+          0.7,
+          0.6667,
+          0.6833,
+          0.7,
+          0.6958,
+          0.7625,
+          0.7833,
+          0.7875,
+          0.7542,
+          0.8125,
+          0.8292,
+          0.7958,
+          0.8292,
+          0.8583,
+          0.8708,
+          0.8417,
+          0.8625,
+          0.8708,
+          0.8542,
+          0.8875,
+          0.8917,
+          0.85,
+          0.8917,
+          0.9167,
+          0.8667,
+          0.9167,
+          0.9083,
+          0.9167
+        ],
+        "val_acc": [
+          0.1667,
+          0.2667,
+          0.3833,
+          0.2833,
+          0.45,
+          0.4333,
+          0.5333,
+          0.6,
+          0.25,
+          0.4,
+          0.6,
+          0.4333,
+          0.7333,
+          0.4167,
+          0.6833,
+          0.6833,
+          0.5833,
+          0.7333,
+          0.65,
+          0.7167,
+          0.7,
+          0.7333,
+          0.75,
+          0.7667,
+          0.75,
+          0.75,
+          0.7333,
+          0.7667,
+          0.7667,
+          0.7667,
+          0.8167,
+          0.75,
+          0.7167,
+          0.7667,
+          0.7833,
+          0.8,
+          0.7833,
+          0.7833,
+          0.8,
+          0.8,
+          0.7833,
+          0.8,
+          0.7833,
+          0.8,
+          0.7833
+        ],
+        "val_f1": [
+          0.0476,
+          0.1453,
+          0.2605,
+          0.191,
+          0.3216,
+          0.3962,
+          0.4659,
+          0.5654,
+          0.1778,
+          0.3084,
+          0.5245,
+          0.3578,
+          0.715,
+          0.3443,
+          0.649,
+          0.6698,
+          0.5786,
+          0.7122,
+          0.6091,
+          0.6947,
+          0.6923,
+          0.7205,
+          0.7433,
+          0.7631,
+          0.7396,
+          0.734,
+          0.7171,
+          0.76,
+          0.7629,
+          0.7633,
+          0.8152,
+          0.7452,
+          0.7128,
+          0.7575,
+          0.7776,
+          0.7985,
+          0.7787,
+          0.7818,
+          0.7992,
+          0.7992,
+          0.7818,
+          0.7999,
+          0.7814,
+          0.7999,
+          0.7818
+        ]
+      },
+      "val_metrics": {
+        "loss": 0.5451,
+        "accuracy": 0.8167,
+        "precision_macro": 0.8247,
+        "recall_macro": 0.8167,
+        "f1_macro": 0.8152,
+        "f1_weighted": 0.8152,
+        "confusion_matrix": [
+          [
+            9,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            7,
+            2,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            2,
+            8,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            10,
+            0,
+            0
+          ],
+          [
+            0,
+            2,
+            1,
+            0,
+            6,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            9
+          ]
+        ],
+        "classification_report": {
+          "F": {
+            "precision": 1.0,
+            "recall": 0.9,
+            "f1-score": 0.9473684210526315,
+            "support": 10.0
+          },
+          "M": {
+            "precision": 0.6363636363636364,
+            "recall": 0.7,
+            "f1-score": 0.6666666666666666,
+            "support": 10.0
+          },
+          "N": {
+            "precision": 0.7272727272727273,
+            "recall": 0.8,
+            "f1-score": 0.7619047619047619,
+            "support": 10.0
+          },
+          "Q": {
+            "precision": 0.9090909090909091,
+            "recall": 1.0,
+            "f1-score": 0.9523809523809523,
+            "support": 10.0
+          },
+          "S": {
+            "precision": 0.8571428571428571,
+            "recall": 0.6,
+            "f1-score": 0.7058823529411765,
+            "support": 10.0
+          },
+          "V": {
+            "precision": 0.8181818181818182,
+            "recall": 0.9,
+            "f1-score": 0.8571428571428571,
+            "support": 10.0
+          },
+          "accuracy": 0.8166666666666667,
+          "macro avg": {
+            "precision": 0.8246753246753246,
+            "recall": 0.8166666666666668,
+            "f1-score": 0.8152243353481743,
+            "support": 60.0
+          },
+          "weighted avg": {
+            "precision": 0.8246753246753246,
+            "recall": 0.8166666666666667,
+            "f1-score": 0.8152243353481744,
+            "support": 60.0
+          }
+        }
+      },
+      "test_metrics": {
+        "loss": 0.9403,
+        "accuracy": 0.6833,
+        "precision_macro": 0.6775,
+        "recall_macro": 0.6833,
+        "f1_macro": 0.6589,
+        "f1_weighted": 0.6589,
+        "confusion_matrix": [
+          [
+            16,
+            0,
+            0,
+            1,
+            0,
+            3
+          ],
+          [
+            0,
+            12,
+            3,
+            2,
+            3,
+            0
+          ],
+          [
+            1,
+            5,
+            4,
+            4,
+            5,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            20,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            17,
+            2
+          ],
+          [
+            1,
+            0,
+            0,
+            6,
+            0,
+            13
+          ]
+        ],
+        "classification_report": {
+          "F": {
+            "precision": 0.8888888888888888,
+            "recall": 0.8,
+            "f1-score": 0.8421052631578947,
+            "support": 20.0
+          },
+          "M": {
+            "precision": 0.7058823529411765,
+            "recall": 0.6,
+            "f1-score": 0.6486486486486487,
+            "support": 20.0
+          },
+          "N": {
+            "precision": 0.5,
+            "recall": 0.2,
+            "f1-score": 0.2857142857142857,
+            "support": 20.0
+          },
+          "Q": {
+            "precision": 0.6060606060606061,
+            "recall": 1.0,
+            "f1-score": 0.7547169811320755,
+            "support": 20.0
+          },
+          "S": {
+            "precision": 0.68,
+            "recall": 0.85,
+            "f1-score": 0.7555555555555555,
+            "support": 20.0
+          },
+          "V": {
+            "precision": 0.6842105263157895,
+            "recall": 0.65,
+            "f1-score": 0.6666666666666666,
+            "support": 20.0
+          },
+          "accuracy": 0.6833333333333333,
+          "macro avg": {
+            "precision": 0.6775070623677436,
+            "recall": 0.6833333333333332,
+            "f1-score": 0.6589012334791878,
+            "support": 120.0
+          },
+          "weighted avg": {
+            "precision": 0.6775070623677435,
+            "recall": 0.6833333333333333,
+            "f1-score": 0.6589012334791878,
+            "support": 120.0
+          }
+        }
+      }
+    },
+    "resnet18_transfer": {
+      "name": "ResNet18 (Transfer Learning - ImageNet)",
+      "input_shape": [
+        3,
+        224,
+        224
+      ],
+      "num_params": 11242950,
+      "epochs_stage1": 8,
+      "epochs_stage2": 24,
+      "best_epoch": 14,
+      "train_time_sec": 1229.1,
+      "history": {
+        "train_loss": [
+          1.8423,
+          1.664,
+          1.5264,
+          1.4516,
+          1.3814,
+          1.3351,
+          1.3304,
+          1.2351,
+          1.1306,
+          0.8143,
+          0.6444,
+          0.5685,
+          0.4915,
+          0.442,
+          0.4102,
+          0.3869,
+          0.3733,
+          0.3612,
+          0.3336,
+          0.3391,
+          0.3394,
+          0.3287,
+          0.316,
+          0.2989,
+          0.2946,
+          0.299,
+          0.2999,
+          0.3015,
+          0.2937,
+          0.288,
+          0.2836,
+          0.2846
+        ],
+        "val_loss": [
+          1.6782,
+          1.5914,
+          1.4748,
+          1.3286,
+          1.1827,
+          1.0943,
+          0.9506,
+          0.9815,
+          0.8204,
+          0.5645,
+          0.5596,
+          0.5576,
+          0.5604,
+          0.5713,
+          0.6778,
+          0.6543,
+          0.5447,
+          0.5446,
+          0.6379,
+          0.6336,
+          0.5102,
+          0.5601,
+          0.5762,
+          0.5807,
+          0.5844,
+          0.6012,
+          0.609,
+          0.6333,
+          0.6449,
+          0.6337,
+          0.623,
+          0.6244
+        ],
+        "train_acc": [
+          0.2125,
+          0.3375,
+          0.4292,
+          0.5,
+          0.4667,
+          0.5083,
+          0.5375,
+          0.5583,
+          0.6042,
+          0.775,
+          0.8458,
+          0.8625,
+          0.9333,
+          0.9542,
+          0.9542,
+          0.9708,
+          0.9708,
+          0.9792,
+          0.9792,
+          0.975,
+          0.975,
+          0.9875,
+          0.9917,
+          1.0,
+          0.9958,
+          0.9958,
+          1.0,
+          0.9958,
+          0.9958,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "val_acc": [
+          0.4,
+          0.35,
+          0.4167,
+          0.55,
+          0.5667,
+          0.6167,
+          0.6,
+          0.6167,
+          0.6333,
+          0.7333,
+          0.8333,
+          0.7833,
+          0.8,
+          0.85,
+          0.7667,
+          0.7833,
+          0.8,
+          0.8167,
+          0.8,
+          0.85,
+          0.8333,
+          0.85,
+          0.8167,
+          0.8167,
+          0.8333,
+          0.8333,
+          0.85,
+          0.8333,
+          0.8167,
+          0.8167,
+          0.8333,
+          0.8333
+        ],
+        "val_f1": [
+          0.3391,
+          0.3276,
+          0.3922,
+          0.5195,
+          0.5041,
+          0.6094,
+          0.5897,
+          0.5731,
+          0.6048,
+          0.7215,
+          0.832,
+          0.7817,
+          0.7972,
+          0.8483,
+          0.7626,
+          0.7858,
+          0.8006,
+          0.8178,
+          0.7985,
+          0.8461,
+          0.8325,
+          0.8472,
+          0.8152,
+          0.8152,
+          0.8296,
+          0.8304,
+          0.8468,
+          0.8304,
+          0.8135,
+          0.8135,
+          0.8304,
+          0.8304
+        ],
+        "stage": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "val_metrics": {
+        "loss": 0.5713,
+        "accuracy": 0.85,
+        "precision_macro": 0.8684,
+        "recall_macro": 0.85,
+        "f1_macro": 0.8483,
+        "f1_weighted": 0.8483,
+        "confusion_matrix": [
+          [
+            9,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            8,
+            2,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            9,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            10,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            2,
+            0,
+            6,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            9
+          ]
+        ],
+        "classification_report": {
+          "F": {
+            "precision": 0.9,
+            "recall": 0.9,
+            "f1-score": 0.9,
+            "support": 10.0
+          },
+          "M": {
+            "precision": 0.8,
+            "recall": 0.8,
+            "f1-score": 0.8,
+            "support": 10.0
+          },
+          "N": {
+            "precision": 0.6923076923076923,
+            "recall": 0.9,
+            "f1-score": 0.782608695652174,
+            "support": 10.0
+          },
+          "Q": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 10.0
+          },
+          "S": {
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1-score": 0.75,
+            "support": 10.0
+          },
+          "V": {
+            "precision": 0.8181818181818182,
+            "recall": 0.9,
+            "f1-score": 0.8571428571428571,
+            "support": 10.0
+          },
+          "accuracy": 0.85,
+          "macro avg": {
+            "precision": 0.8684149184149185,
+            "recall": 0.8500000000000001,
+            "f1-score": 0.8482919254658384,
+            "support": 60.0
+          },
+          "weighted avg": {
+            "precision": 0.8684149184149184,
+            "recall": 0.85,
+            "f1-score": 0.8482919254658384,
+            "support": 60.0
+          }
+        }
+      },
+      "test_metrics": {
+        "loss": 0.8329,
+        "accuracy": 0.7833,
+        "precision_macro": 0.7707,
+        "recall_macro": 0.7833,
+        "f1_macro": 0.7723,
+        "f1_weighted": 0.7723,
+        "confusion_matrix": [
+          [
+            17,
+            1,
+            0,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            14,
+            5,
+            1,
+            0,
+            0
+          ],
+          [
+            2,
+            7,
+            7,
+            0,
+            4,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            20,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            1,
+            0,
+            17,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            19
+          ]
+        ],
+        "classification_report": {
+          "F": {
+            "precision": 0.8947368421052632,
+            "recall": 0.85,
+            "f1-score": 0.8717948717948718,
+            "support": 20.0
+          },
+          "M": {
+            "precision": 0.6086956521739131,
+            "recall": 0.7,
+            "f1-score": 0.6511627906976745,
+            "support": 20.0
+          },
+          "N": {
+            "precision": 0.5384615384615384,
+            "recall": 0.35,
+            "f1-score": 0.42424242424242425,
+            "support": 20.0
+          },
+          "Q": {
+            "precision": 0.9090909090909091,
+            "recall": 1.0,
+            "f1-score": 0.9523809523809523,
+            "support": 20.0
+          },
+          "S": {
+            "precision": 0.8095238095238095,
+            "recall": 0.85,
+            "f1-score": 0.8292682926829268,
+            "support": 20.0
+          },
+          "V": {
+            "precision": 0.8636363636363636,
+            "recall": 0.95,
+            "f1-score": 0.9047619047619048,
+            "support": 20.0
+          },
+          "accuracy": 0.7833333333333333,
+          "macro avg": {
+            "precision": 0.7706908524986328,
+            "recall": 0.7833333333333333,
+            "f1-score": 0.7722685394267924,
+            "support": 120.0
+          },
+          "weighted avg": {
+            "precision": 0.7706908524986328,
+            "recall": 0.7833333333333333,
+            "f1-score": 0.7722685394267924,
+            "support": 120.0
+          }
+        }
+      }
+    }
+  },
+  "recommended_model": "resnet18_transfer"
+}
